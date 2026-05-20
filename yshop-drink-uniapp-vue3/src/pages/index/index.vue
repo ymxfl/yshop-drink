@@ -65,23 +65,29 @@
       <view class="stats-bar">
         <view class="stat-item">
           <!-- Coins SVG -->
-          <image class="stat-icon" :src="statCoinIcon" mode="aspectFit" style="width: 28rpx; height: 28rpx; margin-right: 8rpx;"></image>
-          <text class="label">会员积分：</text>
-          <text class="value">{{ isLogin ? (member.integral || 0) : 0 }}</text>
+          <image class="stat-icon" :src="statCoinIcon" mode="aspectFit"></image>
+          <view class="stat-text">
+            <text class="label">积分</text>
+            <text class="value">{{ isLogin ? (member.integral || 0) : 0 }}</text>
+          </view>
         </view>
         <view class="divider"></view>
         <view class="stat-item">
           <!-- Wallet SVG -->
-          <image class="stat-icon" :src="statWalletIcon" mode="aspectFit" style="width: 28rpx; height: 28rpx; margin-right: 8rpx;"></image>
-          <text class="label">账户余额：</text>
-          <text class="value">¥{{ isLogin ? parseFloat(member.nowMoney || 0).toFixed(2) : '0.00' }}</text>
+          <image class="stat-icon" :src="statWalletIcon" mode="aspectFit"></image>
+          <view class="stat-text">
+            <text class="label">余额</text>
+            <text class="value">¥{{ isLogin ? parseFloat(member.nowMoney || 0).toFixed(2) : '0.00' }}</text>
+          </view>
         </view>
         <view class="divider"></view>
         <view class="stat-item" @tap="coupons">
           <!-- Ticket SVG -->
-          <image class="stat-icon" :src="statTicketIcon" mode="aspectFit" style="width: 28rpx; height: 28rpx; margin-right: 8rpx;"></image>
-          <text class="label">可用卡券：</text>
-          <text class="value">{{ isLogin ? (member.couponCount || 0) : 0 }}张</text>
+          <image class="stat-icon" :src="statTicketIcon" mode="aspectFit"></image>
+          <view class="stat-text">
+            <text class="label">卡券</text>
+            <text class="value">{{ isLogin ? (member.couponCount || 0) : 0 }}张</text>
+          </view>
         </view>
       </view>
 
@@ -146,11 +152,11 @@ const takeinSmallIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjQgN
 const statCoinIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjgiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4gPGxpbmUgeDE9IjEyIiB5MT0iOCIgeDI9IjEyIiB5Mj0iMTYiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4gPGxpbmUgeDE9IjgiIHkxPSIxMiIgeDI9IjE2IiB5Mj0iMTIiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4gPC9zdmc+"
 const statWalletIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxyZWN0IHg9IjIiIHk9IjQiIHdpZHRoPSIyMCIgaGVpZ2h0PSIxNiIgcng9IjIiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4gPHBhdGggZD0iTTEyIDExaDh2MmgtOHoiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4gPC9zdmc+"
 const statTicketIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxwYXRoIGQ9Ik0xNSA0SDlNMTUgMjBIOU0yMCA5djZNNCA5djYiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4gPHJlY3QgeD0iMiIgeT0iNCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjE2IiByeD0iMiIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPiA8L3N2Zz4="
-const beerGlassInactiveIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMzAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxwYXRoIGQ9Ik02IDhWMjRDNiAyNS4xIDYuOSAyNiA4IDI2SDE2QzE3LjEgMjYgMTggMjUuMSAxOCAyNFY4IiBzdHJva2U9IiMzMzMzMzMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+IDxwYXRoIGQ9Ik0xOCAxMUgyMC41QzIxLjMgMTEgMjIgMTEuNyAyMiAxMi41VjE5LjVDMjIgMjAuMyAyMS4zIDIxIDIwLjUgMjFIMTgiIHN0cm9rZT0iIzMzMzMzMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4gPC9zdmc+"
-const beerGlassActiveIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMzAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxwYXRoIGQ9Ik02IDhWMjRDNiAyNS4xIDYuOSAyNiA4IDI2SDE2QzE3LjEgMjYgMTggMjUuMSAxOCAyNFY4IiBzdHJva2U9IiNENEFGMzciIHN0cm9rZT0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+IDxwYXRoIGQ9Ik0xOCAxMUgyMC41QzIxLjMgMTEgMjIgMTEuNyAyMiAxMi41VjE5LjVDMjIgMjAuMyAyMS4zIDIxIDIwLjUgMjFIMTgiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4gPHBhdGggZD0iTTUgOEM1IDYuOSA1LjkgNiA3IDZIMTdDMTguMSA2IDE5IDYuOSAxOSA4QzE5IDguNTUgMTguNTUgOSAxOCA5SDZDNS40NSA5IDUgOC41NSA1IDhaIiBmaWxsPSIjRkZGRkZGIi8+IDxwYXRoIGQ9Ik03IDEwVjI0SDE3VjEwSDdaIiBmaWxsPSIjRDRBRjM3Ii8+IDwvc3ZnPg=="
-const gridCouponsIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxwYXRoIGQ9Ik0yIDlWNmEyIDIgMCAwIDEgMi0yaDE2YTIgMiAwIDAgMSAyIDJ2M2EyIDIgMCAwIDAgMCA0djNhMiAyIDAgMCAxLTIgMkg0YTIgMiAwIDAgMS0yLTJ2LTNhMiAyIDAgMCAwIDAtNFoiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4gPHBhdGggZD0iTTEyIDR2MTYiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1kYXNoYXJyYXk9IjIgMiIgLz4gPC9zdmc+"
-const gridScoreIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxjaXJjbGUgY3g9IjEyIiBjeT0iOCIgcj0iNiIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPiA8cGF0aCBkPSJNMTIgMTRjLTQuNCAwLTggMi04IDR2MmgxNnYtMmMwLTItMy42LTQtOC00WiIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPiA8cGF0aCBkPSJNOSA4aDZNMTIgNXY2IiBzdHJva2U9IiNENEFGMzciIHN0cm9rZT0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+IDwvc3ZnPg=="
-const gridInviteIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxwYXRoIGQ9Ik0yMCAxMnYxMEg0VjEyIiBzdHJva2U9IiNENEFGMzciIHN0cm9rZT0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+IDxyZWN0IHg9IjIiIHk9IjciIHdpZHRoPSIyMCIgaGVpZ2h0PSI1IiByeD0iMSIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPiA8cGF0aCBkPSJNMTIgMjJWNyIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPiA8cGF0aCBkPSJNMTIgN2MtMS41LTMtNC41LTMtNC41IDBTMTAuNSA3IDEyIDdaIiBzdHJva2U9IiNENEFGMzciIHN0cm9rZT0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+IDxwYXRoIGQ9Ik0xMiA3YzEuNS0zIDQuNS0zIDQuNSAwUzEzLjUgNyAxMiA3WiIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPiA8L3N2Zz4="
+const beerGlassInactiveIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMzAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTYgOFYyNEM2IDI1LjEgNi45IDI2IDggMjZIMTZDMTcuMSAyNiAxOCAyNS4xIDE4IDI0VjgiIHN0cm9rZT0iIzQ0NDQ0NCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNMTggMTFIMjAuNUMyMS4zIDExIDIyIDExLjcgMjIgMTIuNVYxOS41QzIyIDIwLjMgMjEuMyAyMSAyMC41IDIxSDE4IiBzdHJva2U9IiM0NDQ0NDQiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+"
+const beerGlassActiveIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMzAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTYgOFYyNEM2IDI1LjEgNi45IDI2IDggMjZIMTZDMTcuMSAyNiAxOCAyNS4xIDE4IDI0VjgiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNMTggMTFIMjAuNUMyMS4zIDExIDIyIDExLjcgMjIgMTIuNVYxOS41QzIyIDIwLjMgMjEuMyAyMSAyMC41IDIxSDE4IiBzdHJva2U9IiNENEFGMzciIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHBhdGggZD0iTTUgOEM1IDYuOSA1LjkgNiA3IDZIMTdDMTguMSA2IDE5IDYuOSAxOSA4QzE5IDguNTUgMTguNTUgOSAxOCA5SDZDNS40NSA5IDUgOC41NSA1IDhaIiBmaWxsPSIjRkZGREU3Ii8+PHBhdGggZD0iTTcgMTBWMjRIMTdWMTBIN1oiIGZpbGw9IiNENEFGMzciLz48L3N2Zz4="
+const gridCouponsIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTIgOVY2YTIgMiAwIDAgMSAyLTJoMTZhMiAyIDAgMCAxIDIgMnYzYTIgMiAwIDAgMCAwIDR2M2EyIDIgMCAwIDEtMiAySDRhMiAyIDAgMCAxLTItMnYtM2EyIDIgMCAwIDAgMC00WiIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0xMiA0djE2IiBzdHJva2U9IiNENEFGMzciIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtZGFzaGFycmF5PSIzIDMiLz48L3N2Zz4="
+const gridScoreIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMTIiIGN5PSI4IiByPSI1IiBzdHJva2U9IiNENEFGMzciIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHBhdGggZD0iTTQgMjBjMC0zLjMgMy42LTYgOC02czggMi43IDggNiIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0xMCA4aDRNMTIgNnY0IiBzdHJva2U9IiNENEFGMzciIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+"
+const gridInviteIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTIwIDEydjEwSDRWMTIiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cmVjdCB4PSIyIiB5PSI3IiB3aWR0aD0iMjAiIGhlaWdodD0iNSIgcng9IjEiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNMTIgMjJWNyIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0xMiA3Yy0xLjUtMy00LjUtMy00LjUgMFMxMC41IDcgMTIgN1oiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNMTIgN2MxLjUtMyA0LjUtMyA0LjUgMFMxMy41IDcgMTIgN1oiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4="
 
 const main = useMainStore()
 const { member, store, isLogin } = storeToRefs(main)
@@ -378,7 +384,7 @@ page {
   background: rgba(30, 30, 30, 0.9);
   border: 1rpx solid rgba(212, 175, 55, 0.15);
   border-radius: 40rpx;
-  padding: 24rpx 30rpx;
+  padding: 24rpx 20rpx;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -388,24 +394,40 @@ page {
   .stat-item {
     flex: 1;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-size: 24rpx;
+    gap: 6rpx;
+
+    .stat-icon {
+      width: 36rpx;
+      height: 36rpx;
+    }
+
+    .stat-text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rpx;
+    }
 
     .label {
+      font-size: 20rpx;
       color: #9E9E9E;
+      white-space: nowrap;
     }
 
     .value {
+      font-size: 26rpx;
       color: #F5D061;
       font-weight: bold;
-      margin-left: 4rpx;
+      white-space: nowrap;
     }
   }
 
   .divider {
     width: 1rpx;
-    height: 30rpx;
+    height: 50rpx;
     background-color: rgba(255, 255, 255, 0.1);
   }
 }
