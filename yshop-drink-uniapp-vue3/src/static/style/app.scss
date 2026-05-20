@@ -443,6 +443,7 @@ button {
 	padding-left: 30rpx;
 }
 
+/* #ifdef H5 */
 /* 消除所有H5点击时的蓝色外边框/高亮，以及TabBar的蓝色外框 */
 *:focus,
 *:active {
@@ -460,3 +461,4 @@ uni-tabbar,
 	border: none !important;
 	box-shadow: none !important;
 }
+/* #endif */
