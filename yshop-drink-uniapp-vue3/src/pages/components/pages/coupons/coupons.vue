@@ -4,6 +4,9 @@
 	  :title="title"
 	  left-arrow
 	  @leftClick="$onClickLeft"
+	  bgColor="#121212"
+	  :titleStyle="{ color: '#FFFFFF', fontWeight: 'bold' }"
+	  leftIconColor="#D4AF37"
 	/>
 	<view class="container position-relative w-100 h-100 overflow-hidden">
 		<view class="exchange-box">
@@ -339,45 +342,66 @@ const receive = async(coupon,index) => {
 </script>
 
 <style lang="scss" scoped>
-/* #ifdef H5 */
 page {
-	height: 100%;
+	background-color: #121212 !important;
 }
-/* #endif */
 
 .container {
 	display: flex;
 	flex-direction: column;
+	background-color: #121212;
+	min-height: 100vh;
 }
 
 .exchange-box {
 	flex-shrink: 0;
-	height: 200rpx;
-	background-color: #ffffff;
+	height: 160rpx;
+	background-color: #1E1E1E;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
+	border-bottom: 1rpx solid rgba(255, 255, 255, 0.05);
 
 	.input-box {
 		display: flex;
-		align-items: stretch;
-		width: 70%;
-		flex-shrink: 0;
+		align-items: center;
+		width: 85%;
+		height: 88rpx;
+		background-color: #121212;
+		border: 1rpx solid rgba(212, 175, 55, 0.2);
+		border-radius: 44rpx;
+		padding: 0 8rpx 0 30rpx;
+		box-sizing: border-box;
+
 		input {
 			flex: 1;
-			height: 80rpx;
-			border: 1rpx solid #eee;
-			border-right: 0;
-			border-radius: 8rpx 0 0 8rpx;
-			// padding: 20rpx;
-			font-size: $font-size-base;
-			color: $text-color-base;
+			height: 100%;
+			font-size: 28rpx;
+			color: #FFFFFF;
+			background: transparent;
+			border: none;
+			outline: none;
 		}
+
 		button {
-			border-radius: 0 8rpx 8rpx 0;
+			height: 72rpx;
+			line-height: 72rpx;
+			background: linear-gradient(135deg, #E6C655 0%, #D4AF37 100%) !important;
+			color: #121212 !important;
+			font-weight: bold;
+			font-size: 26rpx;
+			border: none;
+			border-radius: 36rpx;
+			padding: 0 40rpx;
 			display: flex;
 			align-items: center;
+			justify-content: center;
+			margin: 0;
+
+			&:active {
+				opacity: 0.9;
+			}
 		}
 	}
 }
@@ -385,7 +409,9 @@ page {
 .tabbar {
 	flex-shrink: 0;
 	width: 100%;
-	height: 120rpx;
+	height: 100rpx;
+	background-color: #1E1E1E;
+	border-bottom: 1rpx solid rgba(255, 255, 255, 0.05);
 
 	.tabbar-scroll {
 		width: 100%;
@@ -407,89 +433,74 @@ page {
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
-		font-size: $font-size-base;
-		color: $text-color-base;
+		font-size: 28rpx;
+		color: #9E9E9E;
 		position: relative;
 		
 		.title {
-			padding: 15rpx 0;
+			padding: 10rpx 0;
 			white-space: nowrap;
 		}
 		
 		&.active {
-			color: $color-primary;
+			color: #D4AF37;
+			font-weight: bold;
 			
 			.title {
-				border-bottom: 5rpx solid $color-primary;
+				border-bottom: 4rpx solid #D4AF37;
 			}
 		}
 	}
 }
 
-
 .coupon-list {
-	height: calc(100vh - 120rpx - 200rpx);
+	height: calc(100vh - 100rpx - 160rpx);
+	background-color: #121212;
 	/* #ifdef H5 */
-	height: calc(100vh - 120rpx - 200rpx - 44px);
+	height: calc(100vh - 100rpx - 160rpx - 44px);
 	/* #endif */
 }
 
 .wrapper {
-	padding: 0 20rpx;
+	padding: 30rpx 24rpx;
 	display: flex;
 	flex-direction: column;
 	
 	.coupon {
 		display: flex;
 		flex-direction: column;
-		background-color: #FFFFFF;
-		margin-bottom: 30rpx;
-		//padding: 0 30rpx;
-		border-radius: 6rpx;
-		box-shadow: 0 10rpx 10rpx -10rpx rgba(15, 15, 15, 0.1);
+		background-color: #1E1E1E;
+		margin-bottom: 24rpx;
+		border-radius: 12rpx;
+		border: 1rpx solid rgba(212, 175, 55, 0.1);
+		box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.4);
 		position: relative;
+		overflow: visible;
 		
 		&::before {
 			content: "";
 			position: absolute;
-			background-color: $bg-color;
-			width: 30rpx;
-			height: 30rpx;
-			bottom: 65rpx;
-			left: -15rpx;
+			background-color: #121212;
+			width: 24rpx;
+			height: 24rpx;
+			bottom: 50rpx;
+			left: -12rpx;
 			border-radius: 100%;
+			z-index: 2;
+			border-right: 1rpx solid rgba(212, 175, 55, 0.1);
 		}
 		
 		&::after {
 			content: "";
 			position: absolute;
-			background-color: $bg-color;
-			width: 30rpx;
-			height: 30rpx;
-			bottom: 65rpx;
-			right: -15rpx;
+			background-color: #121212;
+			width: 24rpx;
+			height: 24rpx;
+			bottom: 50rpx;
+			right: -12rpx;
 			border-radius: 100%;
-		}
-		
-		.detail {
-			padding: 20rpx 0;
-			position: relative;
-
-		    &::after {
-				content: '';
-				position: absolute;
-				left: 0;
-				right: 0;
-				bottom: 0;
-				border-bottom: 1rpx dashed #c6c6c6;
-				transform: scaleY(0.5);
-			}
-			
-			.coupon-img {
-				width: 150rpx;
-				height: 150rpx;
-				margin-right: 40rpx;
-			}
+			z-index: 2;
+			border-left: 1rpx solid rgba(212, 175, 55, 0.1);
 		}
 	}
 }
@@ -497,115 +508,122 @@ page {
 .use-coupon-btn {
 	width: 95%;
 	border-radius: 50rem !important;
+	background: linear-gradient(135deg, #E6C655 0%, #D4AF37 100%) !important;
+	color: #121212 !important;
+	font-weight: bold;
+	border: none;
 }
 
+.modal-content {
+	background-color: #1E1E1E;
+	padding: 40rpx 30rpx;
+	border-radius: 16rpx;
+	color: #FFFFFF;
+	
+	.text-color-base {
+		color: #FFFFFF !important;
+	}
+	
+	.use-coupon-btn {
+		margin-top: 30rpx;
+	}
+}
 
 .taobao {
-	background-color: white;
-	.title {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		margin-bottom: 20rpx;
-		font-size: 30rpx;
-		.left {
-			display: flex;
-			align-items: center;
-		}
-		.store {
-			font-weight: 500;
-		}
-		.buddha {
-			width: 70rpx;
-			height: 70rpx;
-			border-radius: 10rpx;
-			margin-right: 10rpx;
-		}
-		.entrance {
-			color: $uv-info;
-			border: solid 2rpx $uv-info;
-			line-height: 48rpx;
-			padding: 0 30rpx;
-			background: none;
-			border-radius: 15px;
-		}
-	}
+	background-color: transparent;
+	width: 100%;
+
 	.ticket {
 		display: flex;
+		width: 100%;
+		
 		.left {
-			width: 70%;
-			padding: 20rpx;
-			background-color: white;//rgb(255, 245, 244);
-			border-radius: 20rpx;
-			border-right: dashed 2rpx rgb(224, 215, 211);
+			width: 72%;
+			padding: 24rpx;
+			background-color: transparent;
+			border-right: dashed 2rpx rgba(255, 255, 255, 0.1);
 			display: flex;
+			align-items: center;
+
 			.picture {
-				//width: 172rpx;
-				border-radius: 20rpx;
-				width: 190rpx;
-				height: 190rpx;
+				border-radius: 8rpx;
+				width: 140rpx;
+				height: 140rpx;
+				flex-shrink: 0;
 			}
+
 			.introduce {
-				margin-left: 10rpx;
-				.top{
-					color:$uv-warning;
-					font-size: 28rpx;
-					.big{
-						font-size: 60rpx;
-						font-weight: bold;
-						margin-right: 10rpx;
+				margin-left: 20rpx;
+				flex: 1;
+				min-width: 0;
+
+				.top {
+					color: #F5D061;
+					font-size: 26rpx;
+					display: flex;
+					align-items: baseline;
+
+					.big {
+						font-size: 54rpx;
+						font-weight: 800;
+						margin-right: 8rpx;
+						color: #F5D061;
+					}
+					
+					view {
+						font-size: 20rpx;
+						color: #9E9E9E;
 					}
 				}
-				.type{
-					font-size: 28rpx;
-					color: $uv-info-dark;
+				.type {
+					font-size: 26rpx;
+					color: #FFFFFF;
+					font-weight: bold;
+					margin-top: 4rpx;
 				}
-				.date{
-					margin-top: 10rpx;
+				.date {
+					margin-top: 8rpx;
 					font-size: 20rpx;
-					color: $uv-info-dark;
+					color: #9E9E9E;
 				}
 			}
 		}
 		.right {
-			width: 30%;
-			padding: 40rpx 20rpx;
-			background-color: white;//rgb(255, 245, 244);
-			border-radius: 20rpx;
+			width: 28%;
+			padding: 24rpx 10rpx;
+			background-color: transparent;
 			display: flex;
 			align-items: center;
+			justify-content: center;
+
 			.use {
-				height: auto;
+				height: 56rpx;
+				line-height: 56rpx;
 				padding: 0 20rpx;
-				font-size: 24rpx;
-				border-radius: 40rpx;
-				color: #ffffff!important;
-				background-color: $uv-warning!important;
-				line-height: 40rpx;
-				color: rgb(117, 142, 165);
-				margin-left: 20rpx;
+				font-size: 22rpx;
+				border-radius: 28rpx;
+				color: #121212 !important;
+				background: linear-gradient(135deg, #E6C655 0%, #D4AF37 100%) !important;
+				font-weight: bold;
+				margin: 0;
+				white-space: nowrap;
+
+				&:active {
+					opacity: 0.9;
+				}
 			}
 			.used {
-				height: auto;
+				height: 56rpx;
+				line-height: 56rpx;
 				padding: 0 20rpx;
-				font-size: 24rpx;
-				border-radius: 40rpx;
-				color: #ffffff!important;
-				background-color: $uv-info-dark!important;
-				line-height: 40rpx;
-				color: rgb(117, 142, 165);
-				margin-left: 20rpx;
+				font-size: 22rpx;
+				border-radius: 28rpx;
+				color: #888888 !important;
+				background-color: #2A2A2A !important;
+				margin: 0;
+				white-space: nowrap;
+				border: 1rpx solid rgba(255, 255, 255, 0.05);
 			}
-		}
-		.right_log {
-			text-align: center;
-			width: 30%;
-			padding: 80rpx 0rpx;
-			background-color: white;//rgb(255, 245, 244);
-			border-radius: 20rpx;
-			
-			align-items: center;
-			
 		}
 	}
 }

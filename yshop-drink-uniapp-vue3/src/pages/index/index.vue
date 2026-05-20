@@ -30,16 +30,7 @@
         <!-- Card 1: Large (Takeout) -->
         <view class="nav-card large" @tap="takeout">
           <view class="card-icon-wrap">
-            <svg class="nav-svg-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="38" cy="18" r="4" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M30 26L36 22L42 27L38 35H30" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M18 42H44L38 34" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="20" cy="48" r="6" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="44" cy="48" r="6" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M44 48L46 32H42" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <rect x="12" y="24" width="12" height="14" rx="2" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M4 22H8M2 28H8M4 34H6" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <image class="nav-svg-icon" :src="takeoutLargeIcon" mode="aspectFit"></image>
           </view>
           <view class="card-info">
             <view class="card-title">极客精酿</view>
@@ -50,14 +41,7 @@
         <!-- Card 2: Medium (Takeout Fast) -->
         <view class="nav-card small" @tap="takeout">
           <view class="card-icon-wrap">
-            <svg class="nav-svg-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M22 42H48L42 34" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="24" cy="48" r="5" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle cx="46" cy="48" r="5" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M46 48L48 30H44" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <rect x="14" y="26" width="10" height="12" rx="1.5" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M6 18H14M4 26H12M8 34H12" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <image class="nav-svg-icon" :src="takeoutSmallIcon" mode="aspectFit"></image>
           </view>
           <view class="card-info">
             <view class="card-title">极速外卖</view>
@@ -68,14 +52,7 @@
         <!-- Card 3: Medium (Takein Store) -->
         <view class="nav-card small" @tap="takein">
           <view class="card-icon-wrap">
-            <svg class="nav-svg-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 22H52" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
-              <path d="M14 22L18 12H46L50 22" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M12 22C14 22 15 24 17 24C19 24 20 22 22 22C24 22 25 24 27 24C29 24 30 22 32 22C34 22 35 24 37 24C39 24 40 22 42 22C44 22 45 24 47 24C49 24 50 22 52 22" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round"/>
-              <path d="M16 24V52H48V24" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M26 52V36H38V52" stroke="#D4AF37" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <rect x="24" y="14" width="16" height="5" rx="1" fill="#D4AF37"/>
-            </svg>
+            <image class="nav-svg-icon" :src="takeinSmallIcon" mode="aspectFit"></image>
           </view>
           <view class="card-info">
             <view class="card-title">到店自取</view>
@@ -87,16 +64,22 @@
       <!-- Stats Bar (会员积分 / 账户余额 / 可用卡券) -->
       <view class="stats-bar">
         <view class="stat-item">
+          <!-- Coins SVG -->
+          <image class="stat-icon" :src="statCoinIcon" mode="aspectFit" style="width: 28rpx; height: 28rpx; margin-right: 8rpx;"></image>
           <text class="label">会员积分：</text>
-          <text class="value">{{ isLogin ? (member.point || 0) : 0 }}</text>
+          <text class="value">{{ isLogin ? (member.integral || 0) : 0 }}</text>
         </view>
         <view class="divider"></view>
         <view class="stat-item">
+          <!-- Wallet SVG -->
+          <image class="stat-icon" :src="statWalletIcon" mode="aspectFit" style="width: 28rpx; height: 28rpx; margin-right: 8rpx;"></image>
           <text class="label">账户余额：</text>
-          <text class="value">¥{{ isLogin ? parseFloat(member.balance || 0).toFixed(2) : '0.00' }}</text>
+          <text class="value">¥{{ isLogin ? parseFloat(member.nowMoney || 0).toFixed(2) : '0.00' }}</text>
         </view>
         <view class="divider"></view>
         <view class="stat-item" @tap="coupons">
+          <!-- Ticket SVG -->
+          <image class="stat-icon" :src="statTicketIcon" mode="aspectFit" style="width: 28rpx; height: 28rpx; margin-right: 8rpx;"></image>
           <text class="label">可用卡券：</text>
           <text class="value">{{ isLogin ? (member.couponCount || 0) : 0 }}张</text>
         </view>
@@ -105,56 +88,41 @@
       <!-- Stamp Card (集满8杯赠送精酿一杯) -->
       <view class="stamp-card">
         <view class="stamp-header">
-          <view class="stamp-title">集满8杯赠送精酿一杯 <text class="stamp-count-text">({{ isLogin ? Math.min(member.point || 0, 8) : 0 }}/8)</text></view>
+          <view class="stamp-title">集满8杯赠送精酿一杯 <text class="stamp-count-text">({{ isLogin ? Math.min(member.point || member.payCount || 0, 8) : 0 }}/8)</text></view>
         </view>
         <view class="stamp-grid">
           <view
-            v-for="i in 7"
+            v-for="i in 8"
             :key="i"
             class="stamp-item"
-            :class="{ active: isLogin && (member.point || 0) >= i }"
           >
-            <!-- Custom Beer Glass SVG -->
-            <svg class="beer-svg" viewBox="0 0 24 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path class="glass-body" d="M6 8V24C6 25.1 6.9 26 8 26H16C17.1 26 18 25.1 18 24V8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path class="glass-handle" d="M18 11H20.5C21.3 11 22 11.7 22 12.5V19.5C22 20.3 21.3 21 20.5 21H18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              <path class="beer-foam" d="M5 8C5 6.9 5.9 6 7 6H17C18.1 6 19 6.9 19 8C19 8.55 18.55 9 18 9H6C5.45 9 5 8.55 5 8Z" fill="currentColor" />
-              <path class="beer-fill" d="M7 10V24H17V10H7Z" fill="currentColor"/>
-            </svg>
+            <!-- Custom Beer Glass Image switching between active and inactive -->
+            <image
+              class="beer-glass-icon"
+              :src="(isLogin && (member.point || member.payCount || 0) >= i) ? beerGlassActiveIcon : beerGlassInactiveIcon"
+              mode="aspectFit"
+            ></image>
           </view>
         </view>
       </view>
 
-      <!-- Bottom Services Grid -->
+      <!-- Bottom Services Grid (Only Coupons, Score Product, Invite Friend) -->
       <view class="services-grid">
         <view class="grid-item" @tap="coupons">
           <view class="icon-wrap">
-            <svg class="grid-icon" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M2 9V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4Z" />
-              <path d="M12 4v16" stroke-dasharray="2 2" />
-            </svg>
+            <image class="grid-icon" :src="gridCouponsIcon" mode="aspectFit"></image>
           </view>
           <view class="grid-label">卡券中心</view>
         </view>
         <view class="grid-item" @tap="goScore">
           <view class="icon-wrap">
-            <svg class="grid-icon" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="8" r="6" />
-              <path d="M12 14c-4.4 0-8 2-8 4v2h16v-2c0-2-3.6-4-8-4Z" />
-              <path d="M9 8h6M12 5v6" />
-            </svg>
+            <image class="grid-icon" :src="gridScoreIcon" mode="aspectFit"></image>
           </view>
           <view class="grid-label">积分商城</view>
         </view>
         <view class="grid-item" @tap="inviteFriend">
           <view class="icon-wrap">
-            <svg class="grid-icon" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20 12v10H4V12" />
-              <rect x="2" y="7" width="20" height="5" rx="1" />
-              <path d="M12 22V7" />
-              <path d="M12 7c-1.5-3-4.5-3-4.5 0S10.5 7 12 7Z" />
-              <path d="M12 7c1.5-3 4.5-3 4.5 0S13.5 7 12 7Z" />
-            </svg>
+            <image class="grid-icon" :src="gridInviteIcon" mode="aspectFit"></image>
           </view>
           <view class="grid-label">邀请有礼</view>
         </view>
@@ -170,6 +138,19 @@ import { menuAds } from '@/api/market'
 import { userGetUserInfo } from '@/api/user'
 import { storeToRefs } from 'pinia'
 import { useMainStore } from '@/store/store'
+
+// Base64 Encoded SVG Icons for WeChat Mini Program compatibility
+const takeoutLargeIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjQgNjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxjaXJjbGUgY3g9IjM4IiBjeT0iMTgiIHI9IjQiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPiA8cGF0aCBkPSJNMzAgMjZMMzYgMjJMNDIgMjdMMzggMzVIMzAiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPiA8cGF0aCBkPSJNMTggNDJINDRMMzggMzQiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPiA8Y2lyY2xlIGN4PSIyMCIgY3k9IjQ4IiByPSI2IiBzdHJva2U9IiNENEFGMzciIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4gPGNpcmNsZSBjeD0iNDQiIGN5PSI0OCIgcj0iNiIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+IDxwYXRoIGQ9Ik00NCA0OEw0NiAzMkg0MiIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+IDxyZWN0IHg9IjEyIiB5PSIyNCIgd2lkdGg9IjEyIiBoZWlnaHQ9IjE0IiByeD0iMiIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+IDxwYXRoIGQ9Ik00IDIySDhNMiAyOEg4TTQgMzRINiIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+IDwvc3ZnPg=="
+const takeoutSmallIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjQgNjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxwYXRoIGQ9Ik0yMiA0Mkg0OEw0MiAzNCIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+IDxjaXJjbGUgY3g9IjI0IiBjeT0iNDgiIHI9IjUiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPiA8Y2lyY2xlIGN4PSI0NiIgY3k9IjQ4IiByPSI1IiBzdHJva2U9IiNENEFGMzciIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4gPHBhdGggZD0iTTQ2IDQ4TDQ4IDMwSDQ0IiBzdHJva2U9IiNENEFGMzciIHN0cm9rZS13aWR0aD0iMi41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4gPHJlY3QgeD0iMTQiIHk9IjI2IiB3aWR0aD0iMTAiIGhlaWdodD0iMTIiIHJ4PSIxLjUiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPiA8cGF0aCBkPSJNNiAxOEgxNE00IDI2SDEyTTggMzRIMTIiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyLjUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPiA8L3N2Zz4="
+const takeinSmallIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgNjQgNjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxwYXRoIGQ9Ik0xMiAyMkg1MiIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+IDxwYXRoIGQ9Ik0xNCAyMkwxOCAxMkg0Nkw1MCAyMiIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+IDxwYXRoIGQ9Ik0xMiAyMkMxNCAyMiAxNSAyNCAxNyAyNEMxOSAyNCAyMCAyMiAyMiAyMkMyNCAyMiAyNSAyNCAyNyAyNEMyOSAyNCAzMCAyMiAzMiAyMkMzNCAyMiAzNSAyNCAzNyAyNEMzOSAyNCA0MCAyMiA0MiAyMkM0NCAyMiA0NSAyNCA0NyAyNEMzOSAyNCA1MCAyMiA1MiAyMiIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+IDxwYXRoIGQ9Ik0xNiAyNFY1Mkg0OFYyNCIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+IDxwYXRoIGQ9Ik0yNiA1MlYzNkgzOFY1MiIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIuNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+IDxyZWN0IHg9IjI0IiB5PSIxNCIgd2lkdGg9IjE2IiBoZWlnaHQ9IjUiIHJ4PSIxIiBmaWxsPSIjRDRBRjM3Ii8+IDwvc3ZnPg=="
+const statCoinIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxjaXJjbGUgY3g9IjEyIiBjeT0iMTIiIHI9IjgiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4gPGxpbmUgeDE9IjEyIiB5MT0iOCIgeDI9IjEyIiB5Mj0iMTYiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4gPGxpbmUgeDE9IjgiIHkxPSIxMiIgeDI9IjE2IiB5Mj0iMTIiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4gPC9zdmc+"
+const statWalletIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxyZWN0IHg9IjIiIHk9IjQiIHdpZHRoPSIyMCIgaGVpZ2h0PSIxNiIgcng9IjIiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4gPHBhdGggZD0iTTEyIDExaDh2MmgtOHoiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4gPC9zdmc+"
+const statTicketIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxwYXRoIGQ9Ik0xNSA0SDlNMTUgMjBIOU0yMCA5djZNNCA5djYiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4gPHJlY3QgeD0iMiIgeT0iNCIgd2lkdGg9IjIwIiBoZWlnaHQ9IjE2IiByeD0iMiIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPiA8L3N2Zz4="
+const beerGlassInactiveIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMzAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxwYXRoIGQ9Ik02IDhWMjRDNiAyNS4xIDYuOSAyNiA4IDI2SDE2QzE3LjEgMjYgMTggMjUuMSAxOCAyNFY4IiBzdHJva2U9IiMzMzMzMzMiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+IDxwYXRoIGQ9Ik0xOCAxMUgyMC41QzIxLjMgMTEgMjIgMTEuNyAyMiAxMi41VjE5LjVDMjIgMjAuMyAyMS4zIDIxIDIwLjUgMjFIMTgiIHN0cm9rZT0iIzMzMzMzMyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4gPC9zdmc+"
+const beerGlassActiveIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMzAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxwYXRoIGQ9Ik02IDhWMjRDNiAyNS4xIDYuOSAyNiA4IDI2SDE2QzE3LjEgMjYgMTggMjUuMSAxOCAyNFY4IiBzdHJva2U9IiNENEFGMzciIHN0cm9rZT0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+IDxwYXRoIGQ9Ik0xOCAxMUgyMC41QzIxLjMgMTEgMjIgMTEuNyAyMiAxMi41VjE5LjVDMjIgMjAuMyAyMS4zIDIxIDIwLjUgMjFIMTgiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4gPHBhdGggZD0iTTUgOEM1IDYuOSA1LjkgNiA3IDZIMTdDMTguMSA2IDE5IDYuOSAxOSA4QzE5IDguNTUgMTguNTUgOSAxOCA5SDZDNS40NSA5IDUgOC41NSA1IDhaIiBmaWxsPSIjRkZGRkZGIi8+IDxwYXRoIGQ9Ik03IDEwVjI0SDE3VjEwSDdaIiBmaWxsPSIjRDRBRjM3Ii8+IDwvc3ZnPg=="
+const gridCouponsIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxwYXRoIGQ9Ik0yIDlWNmEyIDIgMCAwIDEgMi0yaDE2YTIgMiAwIDAgMSAyIDJ2M2EyIDIgMCAwIDAgMCA0djNhMiAyIDAgMCAxLTIgMkg0YTIgMiAwIDAgMS0yLTJ2LTNhMiAyIDAgMCAwIDAtNFoiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4gPHBhdGggZD0iTTEyIDR2MTYiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1kYXNoYXJyYXk9IjIgMiIgLz4gPC9zdmc+"
+const gridScoreIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxjaXJjbGUgY3g9IjEyIiBjeT0iOCIgcj0iNiIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPiA8cGF0aCBkPSJNMTIgMTRjLTQuNCAwLTggMi04IDR2MmgxNnYtMmMwLTItMy42LTQtOC00WiIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPiA8cGF0aCBkPSJNOSA4aDZNMTIgNXY2IiBzdHJva2U9IiNENEFGMzciIHN0cm9rZT0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+IDwvc3ZnPg=="
+const gridInviteIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+IDxwYXRoIGQ9Ik0yMCAxMnYxMEg0VjEyIiBzdHJva2U9IiNENEFGMzciIHN0cm9rZT0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+IDxyZWN0IHg9IjIiIHk9IjciIHdpZHRoPSIyMCIgaGVpZ2h0PSI1IiByeD0iMSIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPiA8cGF0aCBkPSJNMTIgMjJWNyIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPiA8cGF0aCBkPSJNMTIgN2MtMS41LTMtNC41LTMtNC41IDBTMTAuNSA3IDEyIDdaIiBzdHJva2U9IiNENEFGMzciIHN0cm9rZT0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+IDxwYXRoIGQ9Ik0xMiA3YzEuNS0zIDQuNS0zIDQuNSAwUzEzLjUgNyAxMiA3WiIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPiA8L3N2Zz4="
 
 const main = useMainStore()
 const { member, store, isLogin } = storeToRefs(main)
@@ -216,6 +197,23 @@ const goScore = () => {
 }
 const inviteFriend = () => {
   uni.showToast({ title: '功能开发中', icon: 'none' })
+}
+const goAddress = () => {
+  if (!main.isLogin) {
+    uni.navigateTo({ url: '/pages/components/pages/login/login' })
+    return
+  }
+  uni.navigateTo({ url: '/pages/components/pages/address/address' })
+}
+const goOrders = () => {
+  if (!main.isLogin) {
+    uni.navigateTo({ url: '/pages/components/pages/login/login' })
+    return
+  }
+  uni.navigateTo({ url: '/pages/components/pages/orders/orders' })
+}
+const goCustomer = () => {
+  uni.makePhoneCall({ phoneNumber: '18888888888' })
 }
 
 const getUserInfo = async () => {
@@ -447,54 +445,33 @@ page {
     justify-content: center;
     align-items: center;
 
-    .beer-svg {
+    .beer-glass-icon {
       width: 56rpx;
       height: 70rpx;
-      
-      .glass-body, .glass-handle {
-        color: rgba(255, 255, 255, 0.15);
-      }
-      
-      .beer-fill, .beer-foam {
-        color: transparent;
-      }
-    }
-
-    &.active {
-      .beer-svg {
-        .glass-body, .glass-handle {
-          color: #D4AF37;
-        }
-        .beer-fill {
-          color: #D4AF37;
-        }
-        .beer-foam {
-          color: #FFFFFF;
-        }
-      }
     }
   }
 }
 
 /* ---- Services Grid ---- */
 .services-grid {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   background-color: #1E1E1E;
   border: 1rpx solid rgba(255, 255, 255, 0.05);
   border-radius: 16rpx;
   overflow: hidden;
   box-shadow: 0 8rpx 24rpx rgba(0,0,0,0.3);
+  margin-top: 10rpx;
 
   .grid-item {
-    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 36rpx 20rpx;
+    padding: 30rpx 10rpx;
     border-right: 1rpx solid rgba(255, 255, 255, 0.05);
     transition: all 0.2s ease;
     
-    &:last-child {
+    &:nth-child(3n) {
       border-right: none;
     }
 
