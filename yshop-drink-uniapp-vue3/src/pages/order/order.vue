@@ -16,9 +16,9 @@
 				@change="change"
 				keyName="name"
 				:scrollable="false"
-				activeColor="#D4AF37"
-				inactiveColor="#9E9E9E"
-				:itemStyle="{ paddingLeft: '0', paddingRight: '0' }"
+				:activeStyle="{ color: '#D4AF37', fontWeight: 'bold', fontSize: '30rpx' }"
+				:inactiveStyle="{ color: '#9E9E9E', fontSize: '26rpx' }"
+				:itemStyle="{ paddingLeft: '0', paddingRight: '0', height: '100rpx' }"
 				:lineStyle="{ backgroundColor: '#D4AF37', height: '4rpx', borderRadius: '4rpx' }"
 				:customStyle="{ backgroundColor: '#1E1E1E', borderBottom: '1rpx solid rgba(255,255,255,0.05)' }"
 			></uv-tabs>
@@ -151,6 +151,7 @@ onReachBottom(() => {
 })
 
 const change = (e) => {
+	current.value = e.index
 	type.value = e.type
 	getOrders(true)
 }

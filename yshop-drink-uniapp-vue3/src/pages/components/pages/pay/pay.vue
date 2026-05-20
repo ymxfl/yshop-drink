@@ -715,12 +715,26 @@ const aliPay = async(order) => {
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+/* 覆盖list-cell默认白色背景 */
 page {
 	background-color: #121212 !important;
 }
+.list-cell,
+.uni-list-item,
+.uni-list-item__container,
+.uni-list-item__content {
+	background-color: #1E1E1E !important;
+	color: #FFFFFF !important;
+}
+.uni-list-item__extra {
+	color: #9E9E9E !important;
+}
+</style>
+
+<style lang="scss" scoped>
 	.container {
-		padding: 25rpx;
+		padding: 20rpx 25rpx;
 		background-color: #121212;
 	}
 

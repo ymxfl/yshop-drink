@@ -11,7 +11,7 @@
 			<!-- <view>
 				<image :src="shopAd" mode="aspectFill" class="w-100 " style="height: 250rpx;"></image>
 			</view> -->
-			<view style="height: 60rpx;background-color: #FFFFFF;" v-if="store.notice">
+		<view style="height: 60rpx;background-color: #1E1E1E;" v-if="store.notice">
 					<uv-notice-bar  :text="store.notice"></uv-notice-bar>
 			</view>
 		<view class="main">
@@ -48,13 +48,7 @@
 				</view>
 			</view>
 		
-			<!-- #ifdef H5 -->
-			<view class="content"
-				:style="{height: 'calc(100vh - 500rpx + '+(store.notice ? '0rpx':'60rpx')+')'}">
-				<!-- #endif -->
-				<!-- #ifndef H5 -->
-				<view class="content" :style="{height: 'calc(100vh - 500rpx + '+(store.notice ? '0rpx':'60rpx')+')'}">
-					<!-- #endif -->
+			<view class="content" :style="{height: 'calc(100vh - 268rpx - var(--window-bottom) + '+(store.notice ? '0rpx':'60rpx')+')'}">
 					<scroll-view class="menus" :scroll-into-view="menuScrollIntoView" scroll-with-animation scroll-y>
 						<view class="wrapper">
 							<view class="menu" :id="`menu-${item.id}`" :class="{'current': item.id === currentCateId}"
@@ -117,7 +111,7 @@
 				<!-- 购物车栏 begin -->
 				<view class="cart-box" v-if="cart.length > 0 && isCartShow">
 					<view class="mark">
-						<image src="/static/images/menu/cart.png" class="cart-img" @tap="openCartPopup"></image>
+						<image src="/static/images/menu/cart_gold.png" class="cart-img" @tap="openCartPopup"></image>
 						<view class="tag">{{ getCartGoodsNumber }}</view>
 					</view>
 					<view class="price" @tap="openCartShow">￥{{ getCartGoodsPrice }}</view>
@@ -186,7 +180,7 @@
 			</modal>
 			<!-- 商品详情模态框 end -->
 			<!-- 购物车详情popup -->
-			<uv-popup ref="popup" mode="bottom" class="cart-popup">
+			<uv-popup ref="popup" mode="bottom" class="cart-popup" bgColor="#1E1E1E">
 				<template #default>
 				<view  class="cart-popup">
 					 <view class="top">

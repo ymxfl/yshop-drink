@@ -12,7 +12,7 @@ input {
 }
 
 page {
-	background-color: #F1F8FA;
+	background-color: #121212 !important;
 	height: 100%;
 }
 
@@ -20,6 +20,15 @@ page {
 	width: 100%;
 	height: 100%;
 }
+
+/* Hide scrollbar globally */
+::-webkit-scrollbar {
+	display: none !important;
+	width: 0 !important;
+	height: 0 !important;
+	color: transparent !important;
+}
+
 
 button {
 	margin: 0;
@@ -432,4 +441,22 @@ button {
 
 .pl-30 {
 	padding-left: 30rpx;
+}
+
+/* 消除所有H5点击时的蓝色外边框/高亮，以及TabBar的蓝色外框 */
+*:focus,
+*:active {
+	outline: none !important;
+	-webkit-tap-highlight-color: transparent !important;
+}
+
+uni-tabbar,
+.uni-tabbar,
+.uni-tabbar *,
+.uni-tabbar__item,
+.uni-tabbar__item * {
+	outline: none !important;
+	-webkit-tap-highlight-color: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
 }
