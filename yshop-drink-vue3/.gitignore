@@ -8,3 +8,7 @@ pnpm-debug
 auto-*.d.ts
 .idea
 .history
+
+# Environment variables
+.env
+.env.*

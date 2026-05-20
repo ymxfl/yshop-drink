@@ -5,3 +5,23 @@
 /yshop-drink-boot3/target/
 /yshop-drink-vue3/node_modules
 /yshop-drink-uniapp-vue3/node_moduls
+.dev-logs/
+.dev-pids/
+deploy-config.sh
+deploy-secrets.sh
+.deploy/
+deploy/ssl/
+deploy/ssl-tmp/
+
+# Agent & Editor configurations
+/.agent/
+/.claude/
+/.codex/
+/.cursor/
+/.vscode/
+
+# Scratch & Temporary folders
+/yshop-drink-uniapp-vue3/scratch-vue/
+
+# Sensitive credentials & keys
+/docs/wine.joshuatech.cn_nginx.zip

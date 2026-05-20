@@ -39,3 +39,8 @@ dev-stats.json
 .vscode
 
 .history
+
+# Environment variables
+.env
+.env.*
+!.env.example

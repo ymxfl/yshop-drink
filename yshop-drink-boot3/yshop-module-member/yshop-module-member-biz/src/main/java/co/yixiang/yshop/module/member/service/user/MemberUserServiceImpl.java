@@ -4,8 +4,6 @@ import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import co.yixiang.yshop.framework.common.enums.CommonStatusEnum;
-import co.yixiang.yshop.framework.common.enums.ShopCommonEnum;
-import co.yixiang.yshop.module.coupon.dal.dataobject.couponuser.CouponUserDO;
 import co.yixiang.yshop.module.coupon.service.couponuser.AppCouponUserService;
 import co.yixiang.yshop.module.infra.api.file.FileApi;
 import co.yixiang.yshop.module.member.controller.app.user.vo.AppUserQueryVo;
@@ -20,7 +18,6 @@ import co.yixiang.yshop.module.member.service.userbill.UserBillService;
 import co.yixiang.yshop.module.system.api.sms.SmsCodeApi;
 import co.yixiang.yshop.module.system.api.sms.dto.code.SmsCodeUseReqDTO;
 import co.yixiang.yshop.module.system.enums.sms.SmsSceneEnum;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.annotations.VisibleForTesting;
@@ -126,10 +123,7 @@ public class MemberUserServiceImpl extends ServiceImpl<MemberUserMapper,MemberUs
     @Override
     public AppUserQueryVo getAppUser(Long id){
         AppUserQueryVo appUserQueryVo = UserConvert.INSTANCE.convert3(memberUserMapper.selectById(id));
-        Long count = appCouponUserService.count(new LambdaQueryWrapper<CouponUserDO>()
-                .eq(CouponUserDO::getUserId,id)
-                .eq(CouponUserDO::getStatus, ShopCommonEnum.IS_STATUS_1));
-        appUserQueryVo.setCouponCount(count);
+        appUserQueryVo.setCouponCount(appCouponUserService.countAvailable(id));
         QueryWrapper<UserBillDO> wrapper = new QueryWrapper<>();
         wrapper.select("SUM(number) as sumAll")
                 .eq("category", BillDetailEnum.CATEGORY_1.getValue())

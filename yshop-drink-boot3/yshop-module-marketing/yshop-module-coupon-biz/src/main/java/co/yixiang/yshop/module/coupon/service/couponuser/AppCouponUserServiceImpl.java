@@ -1,7 +1,7 @@
 package co.yixiang.yshop.module.coupon.service.couponuser;
 
-import co.yixiang.yshop.framework.common.enums.ShopCommonEnum;
 import co.yixiang.yshop.framework.mybatis.core.query.LambdaQueryWrapperX;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import co.yixiang.yshop.module.coupon.controller.app.coupon.vo.AppMyCouponVO;
 import co.yixiang.yshop.module.coupon.convert.couponuser.CouponUserConvert;
 import co.yixiang.yshop.module.coupon.dal.dataobject.couponuser.CouponUserDO;
@@ -66,5 +66,14 @@ public class AppCouponUserServiceImpl extends ServiceImpl<CouponUserMapper, Coup
         return CouponUserConvert.INSTANCE.convertList03(pageList.getRecords());
     }
 
+    @Override
+    public Long countAvailable(Long uid) {
+        LocalDateTime nowTime = LocalDateTime.now();
+        return this.count(new LambdaQueryWrapper<CouponUserDO>()
+                .eq(CouponUserDO::getUserId, uid)
+                .eq(CouponUserDO::getStatus, CouponStatusEnum.STATUS_0.getValue())
+                .lt(CouponUserDO::getStartTime, nowTime)
+                .gt(CouponUserDO::getEndTime, nowTime));
+    }
 
 }

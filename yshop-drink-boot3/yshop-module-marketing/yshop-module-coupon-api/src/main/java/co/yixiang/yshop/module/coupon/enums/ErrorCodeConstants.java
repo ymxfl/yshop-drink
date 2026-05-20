@@ -6,5 +6,6 @@ public interface ErrorCodeConstants {
     ErrorCode COUPON_USER_NOT_EXISTS = new ErrorCode(1008018001, "用户领的优惠券不存在");
     ErrorCode COUPON_RECEIVED = new ErrorCode(1008018001, "优惠券已经领取过");
     ErrorCode COUPON_RECEIVE_ZERO = new ErrorCode(1008018001, "优惠券已经被领完");
+    ErrorCode COUPON_NOT_VALID = new ErrorCode(1008018002, "优惠券不在有效期内");
 }
 

@@ -1,0 +1,17 @@
+[Unit]
+Description=YShop Drink Server
+After=network.target redis.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/yshop-drink
+Environment=JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+ExecStart=/usr/lib/jvm/java-17-openjdk/bin/java -Xms512m -Xmx1024m -jar /opt/yshop-drink/yshop-server.jar --spring.profiles.active=prod --spring.config.additional-location=file:/opt/yshop-drink/application-secret.yaml
+Restart=on-failure
+RestartSec=10
+StandardOutput=append:/opt/yshop-drink/logs/stdout.log
+StandardError=append:/opt/yshop-drink/logs/stderr.log
+
+[Install]
+WantedBy=multi-user.target

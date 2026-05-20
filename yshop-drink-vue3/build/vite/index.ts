@@ -66,10 +66,14 @@ export function createVitePlugins() {
       resolvers: [ElementPlusResolver()],
       globs: ["src/components/**/**.{vue, md}", '!src/components/DiyEditor/components/mobile/**']
     }),
-    EslintPlugin({
-      cache: false,
-      include: ['src/**/*.vue', 'src/**/*.ts', 'src/**/*.tsx'] // 检查的文件
-    }),
+    ...(process.env.VITE_DEPLOY_BUILD
+      ? []
+      : [
+          EslintPlugin({
+            cache: false,
+            include: ['src/**/*.vue', 'src/**/*.ts', 'src/**/*.tsx']
+          })
+        ]),
     VueI18nPlugin({
       runtimeOnly: true,
       compositionOnly: true,

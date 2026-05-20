@@ -23,6 +23,9 @@ public interface AppCouponUserService extends IService<CouponUserDO> {
      */
     List<AppMyCouponVO> getList(Long uid, Long shopId,int type, int page, int pagesize);
 
-
+    /**
+     * 统计用户当前可用优惠券数量（未使用且在有效期内）
+     */
+    Long countAvailable(Long uid);
 
 }

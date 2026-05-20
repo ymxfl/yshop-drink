@@ -69,7 +69,8 @@ public class AppCouponServiceImpl extends ServiceImpl<CouponMapper, CouponDO> im
         Page<CouponDO> pageModel = new Page<>(page, pagesize);
         LambdaQueryWrapperX<CouponDO> wrapper = new LambdaQueryWrapperX<>();
         wrapper.eqIfPresent(CouponDO::getShopId, shopId)
-                .gt(CouponDO::getEndTime,nowTime)
+                .lt(CouponDO::getStartTime, nowTime)
+                .gt(CouponDO::getEndTime, nowTime)
                 .orderByDesc(CouponDO::getWeigh);
         IPage<CouponDO> pageList = this.baseMapper.selectPage(pageModel, wrapper);
         List<AppCouponVO> list = new ArrayList<>();
@@ -104,6 +105,10 @@ public class AppCouponServiceImpl extends ServiceImpl<CouponMapper, CouponDO> im
         }
         if(couponDO == null){
             throw exception(COUPON_NOT_EXISTS);
+        }
+        LocalDateTime nowTime = LocalDateTime.now();
+        if (nowTime.isBefore(couponDO.getStartTime()) || !nowTime.isBefore(couponDO.getEndTime())) {
+            throw exception(COUPON_NOT_VALID);
         }
         if(couponDO.getReceive() >= couponDO.getDistribute()){
             throw exception(COUPON_RECEIVE_ZERO);
