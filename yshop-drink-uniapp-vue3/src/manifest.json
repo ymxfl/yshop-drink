@@ -402,6 +402,7 @@
     /* 小程序特有相关 */
     "mp-weixin" : {
         "appid" : "wx957d9a69daf237d9",
+        "backgroundColor" : "#121212",
         "lazyCodeLoading" : "requiredComponents",
         "setting" : {
             "urlCheck" : false,

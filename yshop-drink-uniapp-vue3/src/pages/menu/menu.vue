@@ -1,17 +1,20 @@
 <template>
-	<layout>
+	<view class="menu-page-root">
 		<uv-navbar
-		  :fixed="false"
+		  :fixed="true"
+		  :placeholder="true"
 		  :title="title"
-		  left-arrow
-		  @leftClick="$onClickLeft"
+		  :left-icon="''"
+		  bg-color="#121212"
+		  :title-style="{ color: '#FFFFFF', fontWeight: 'bold' }"
+		  left-icon-color="#D4AF37"
 		/>
-		
-		<view class="container" v-if="!loading">
+
+		<view class="menu-page-body" v-if="!loading">
 			<!-- <view>
 				<image :src="shopAd" mode="aspectFill" class="w-100 " style="height: 250rpx;"></image>
 			</view> -->
-		<view style="height: 60rpx;background-color: #1E1E1E;" v-if="store.notice">
+		<view class="menu-notice-wrap" style="height: 60rpx;background-color: #1E1E1E;" v-if="store.notice">
 					<uv-notice-bar  :text="store.notice"></uv-notice-bar>
 			</view>
 		<view class="main">
@@ -48,8 +51,8 @@
 				</view>
 			</view>
 		
-			<view class="content" :style="{height: 'calc(100vh - 268rpx - var(--window-bottom) + '+(store.notice ? '0rpx':'60rpx')+')'}">
-					<scroll-view class="menus" :scroll-into-view="menuScrollIntoView" scroll-with-animation scroll-y>
+			<view class="content">
+					<scroll-view class="menus" :scroll-into-view="menuScrollIntoView" scroll-with-animation scroll-y :bounces="false">
 						<view class="wrapper">
 							<view class="menu" :id="`menu-${item.id}`" :class="{'current': item.id === currentCateId}"
 								v-for="(item, index) in goods" :key="index" @tap="handleMenuTap(item.id)">
@@ -60,7 +63,12 @@
 					</scroll-view>
 					<!-- goods list begin -->
 					<scroll-view class="goods" scroll-with-animation scroll-y :scroll-top="cateScrollTop"
-						@scroll="handleGoodsScroll">
+						@scroll="handleGoodsScroll" :bounces="false"
+						refresher-enabled
+						:refresher-triggered="menuRefresherTriggered"
+						refresher-default-style="black"
+						refresher-background="#121212"
+						@refresherrefresh="onMenuRefresherRefresh">
 						<view class="wrapper">
 							<view class="list">
 								<!-- category begin -->
@@ -232,7 +240,7 @@
 				v-if="!store.id">定位最近的门店</button>
 		<!-- 	<uv-toast ref="uToast"></uv-toast> -->
 		</view>
-	</layout>
+	</view>
 </template>
 
 <script setup>
@@ -243,7 +251,7 @@ import {
 } from 'vue'
 import { useMainStore } from '@/store/store'
 import { storeToRefs } from 'pinia'
-import { onLoad,onShow ,onPullDownRefresh,onHide} from '@dcloudio/uni-app'
+import { onLoad,onShow ,onHide} from '@dcloudio/uni-app'
 import { formatDateTime,kmUnit } from '@/utils/util'
 import {
   shopNearby,
@@ -254,7 +262,7 @@ import {
 } from '@/api/market'
 const main = useMainStore()
 const { orderType,address, store,location,isLogin } = storeToRefs(main)
-const title = ref('点餐')
+const title = ref('点酒')
 const text = ref('滚动通知')
 
 const goods = ref([])
@@ -273,6 +281,12 @@ const newValue = ref([])
 const shopAd = ref('')
 const isCartShow = ref(true)
 const popup = ref()
+const menuRefresherTriggered = ref(false)
+
+const onMenuRefresherRefresh = () => {
+	menuRefresherTriggered.value = true
+	init()
+}
 
 
 
@@ -319,9 +333,6 @@ uni.$on('refreshMenu', () => {
 	init()
 })
 
-onPullDownRefresh(() => {
-	init()
-})
 onLoad(() => {
 	init();
 	refreshCart()
@@ -406,40 +417,45 @@ const  init = async() => { //页面初始化
 }
 const getShopList = async(res) => {
 	 console.log('location9:',res)
-	if (res) {
-		main.SET_LOCATION(res);
+	try {
+		if (res) {
+			main.SET_LOCATION(res);
 	
-		let shop_id = 0;
-		if (store.value.id) {
-			shop_id = store.value.id;
-		}
-	
-		let shop = await shopNearby({
-			lat: res.latitude,
-			lng: res.longitude,
-			shop_id: shop_id,
-			kw: ''
-		});
-		if (shop) {
-			//广告图
-			getAds(shop.id);
-	
-			shop.notice = shop.status == 1 ? shop.notice : '店铺营业时间为:' + formatDateTime(shop.startTime,'hh:mm')+' - '+formatDateTime(shop.endTime,'hh:mm') +
-			'，不在营业时间内无法下单';
-			// 设置店铺信息
-			main.SET_STORE(shop);
-			let mygoods = await menuGoods({
-				shopId: shop.id
-			});
-			if (mygoods) {
-				goods.value = mygoods;
-				refreshCart();
+			let shop_id = 0;
+			if (store.value.id) {
+				shop_id = store.value.id;
 			}
-			console.log('goods:',mygoods)
-			console.log('goods:',goods.value)
-			loading.value = false;
-			uni.stopPullDownRefresh();
+	
+			let shop = await shopNearby({
+				lat: res.latitude,
+				lng: res.longitude,
+				shop_id: shop_id,
+				kw: ''
+			});
+			if (shop) {
+				//广告图
+				getAds(shop.id);
+	
+				shop.notice = shop.status == 1 ? shop.notice : '店铺营业时间为:' + formatDateTime(shop.startTime,'hh:mm')+' - '+formatDateTime(shop.endTime,'hh:mm') +
+				'，不在营业时间内无法下单';
+				// 设置店铺信息
+				main.SET_STORE(shop);
+				let mygoods = await menuGoods({
+					shopId: shop.id
+				});
+				if (mygoods) {
+					goods.value = mygoods;
+					refreshCart();
+				}
+				console.log('goods:',mygoods)
+				console.log('goods:',goods.value)
+				loading.value = false;
+				uni.stopPullDownRefresh();
+			}
 		}
+	} finally {
+		uni.stopPullDownRefresh();
+		menuRefresherTriggered.value = false;
 	}
 }
 const refreshCart = () =>{
@@ -731,16 +747,33 @@ const toPay = () => {
 		min-height: 100%;
 	}
 	/* #endif */
-	
-	.container {
+
+	.menu-page-root {
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		background-color: #121212;
+	}
+
+	.menu-page-body {
+		flex: 1;
+		min-height: 0;
+		display: flex;
+		flex-direction: column;
 		overflow: hidden;
 		position: relative;
 		background-color: #121212;
 	}
+
+	.menu-notice-wrap {
+		flex-shrink: 0;
+	}
 	
 	.loading {
+		flex: 1;
+		min-height: 0;
 		width: 100%;
-		height: 100%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -759,13 +792,18 @@ const toPay = () => {
 	
 	
 	.main {
+		flex: 1;
+		min-height: 0;
 		width: 100%;
-		height: 100%;
 		position: relative;
 		background-color: #121212;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
 	}
 	
 	.nav {
+		flex-shrink: 0;
 		width: 100%;
 		height: 140rpx;
 		display: flex;
@@ -866,11 +904,9 @@ const toPay = () => {
 	}
 	
 	.content {
+		flex: 1;
+		min-height: 0;
 		width: 100%;
-		height: calc(100vh - 212rpx);
-		/* #ifdef H5 */
-		height: calc(100vh - 212rpx - 188rpx);
-		/* #endif */
 		display: flex;
 		background-color: #121212;
 	

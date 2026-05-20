@@ -1,14 +1,15 @@
 <template>
-	<uv-navbar
-	  :fixed="false"
-	  :title="title"
-	  left-arrow
-	  @leftClick="$onClickLeft"
-	  bgColor="#121212"
-	  :titleStyle="{ color: '#FFFFFF', fontWeight: 'bold' }"
-	  leftIconColor="#D4AF37"
-	/>
-	<view class="container position-relative w-100 h-100 overflow-hidden">
+	<view class="coupons-page-root">
+		<uv-navbar
+		  :fixed="true"
+		  :placeholder="true"
+		  :title="title"
+		  :auto-back="true"
+		  bg-color="#121212"
+		  :title-style="{ color: '#FFFFFF', fontWeight: 'bold' }"
+		  left-icon-color="#D4AF37"
+		/>
+		<view class="coupons-body">
 		<view class="exchange-box">
 			<view class="input-box">
 				<input type="text" v-model="exchange_code" placeholder="请输入兑换码" placeholder-class="text-color-assist font-size-base" />
@@ -25,8 +26,13 @@
 				</view>
 			</scroll-view>
 		</view>
-		<view class="flex-fill">
-			<scroll-view scroll-y class="coupon-list" @scrolltolower="getCoupons(activeTabIndex)">
+		<view class="coupon-list-wrap">
+			<scroll-view scroll-y class="coupon-list" :bounces="false" @scrolltolower="getCoupons(activeTabIndex)"
+				refresher-enabled
+				:refresher-triggered="couponRefresherTriggered"
+				refresher-default-style="black"
+				refresher-background="#121212"
+				@refresherrefresh="onCouponRefresherRefresh">
 				<view class="wrapper"  v-if="0 === activeTabIndex">
 					<uv-empty v-if="myCoupons.length == 0" mode="list"></uv-empty>
 					<view class="coupon" v-for="(item, index) in myCoupons" :key="index" @tap="openDetailModal(item,index)">
@@ -145,7 +151,8 @@
 						</view>
 					</view>
 				</view>
-			</scroll-view>
+		</scroll-view>
+		</view>
 		</view>
 		<modal custom :show="detailModalVisible" @cancel="closeDetailModal" width="90%">
 			<view class="modal-content">
@@ -177,7 +184,6 @@
 			</view>
 		</modal>
 		
-		<!--轻提示-->
 		<uv-toast ref="uToast"></uv-toast>
 	</view>
 </template>
@@ -189,7 +195,7 @@ import {
 } from 'vue'
 import { useMainStore } from '@/store/store'
 import { storeToRefs } from 'pinia'
-import { onLoad,onShow ,onPullDownRefresh,onHide} from '@dcloudio/uni-app'
+import { onLoad,onShow ,onHide} from '@dcloudio/uni-app'
 import { formatDateTime,kmUnit } from '@/utils/util'
 import {
   couponReceive,
@@ -218,6 +224,19 @@ const notCoupons = ref([])
 const usedCoupons = ref([])
 const expiredCoupons = ref([])
 
+const couponRefresherTriggered = ref(false)
+
+const onCouponRefresherRefresh = async () => {
+	couponRefresherTriggered.value = true
+	try {
+		clearTabList(activeTabIndex.value)
+		tabs.value[activeTabIndex.value].page = 1
+		await getCoupons(activeTabIndex.value)
+	} finally {
+		couponRefresherTriggered.value = false
+	}
+}
+
 const clearTabList = (tabIndex) => {
 	if (tabIndex === 0) myCoupons.value = []
 	if (tabIndex === 1) notCoupons.value = []
@@ -234,11 +253,6 @@ const refreshMember = async () => {
 }
 
 onShow(() => {
-	getCoupons(activeTabIndex.value)
-})
-onPullDownRefresh(() => {
-	clearTabList(activeTabIndex.value)
-	tabs.value[activeTabIndex.value].page = 1
 	getCoupons(activeTabIndex.value)
 })
 watch(activeTabIndex, () => {
@@ -289,7 +303,6 @@ const getCoupons = async(tabIndex) => {
 	if (tab.source === 'not') {
 		notCoupons.value = await couponIndexApi({page, pagesize}) || []
 	}
-	uni.stopPullDownRefresh()
 }
 const openDetailModal = (coupon,index) => {
 	couponIndex.value = index;
@@ -346,11 +359,36 @@ page {
 	background-color: #121212 !important;
 }
 
-.container {
+.coupons-page-root {
+	height: 100vh;
 	display: flex;
 	flex-direction: column;
+	overflow: hidden;
 	background-color: #121212;
-	min-height: 100vh;
+}
+
+.coupons-body {
+	flex: 1;
+	min-height: 0;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	background-color: #121212;
+}
+
+.coupon-list-wrap {
+	flex: 1;
+	min-height: 0;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+.coupon-list {
+	flex: 1;
+	min-height: 0;
+	height: 0;
+	background-color: #121212;
 }
 
 .exchange-box {
@@ -451,14 +489,6 @@ page {
 			}
 		}
 	}
-}
-
-.coupon-list {
-	height: calc(100vh - 100rpx - 160rpx);
-	background-color: #121212;
-	/* #ifdef H5 */
-	height: calc(100vh - 100rpx - 160rpx - 44px);
-	/* #endif */
 }
 
 .wrapper {

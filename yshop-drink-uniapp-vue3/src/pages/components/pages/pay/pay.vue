@@ -14,7 +14,7 @@
 				<template v-if="store.distance > 0">
 					<list-cell class="location">
 						<view class="flex-fill d-flex justify-content-between align-items-center">
-							<view class="store-name flex-fill">{{ orderType == 'takeout' ? '外卖配送' : '点餐自取' }}</view>
+							<view class="store-name flex-fill">{{ orderType == 'takeout' ? '外卖配送' : '点酒自取' }}</view>
 							<uv-switch activeColor="#09b4f1" v-model="active" @change="takout">
 							</uv-switch>
 						</view>

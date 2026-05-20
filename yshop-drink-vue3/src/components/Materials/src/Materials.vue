@@ -100,10 +100,13 @@
                     <el-upload
                       :action="uploadApi"
                       :headers="headers"
+                      :http-request="httpRequest"
                       :file-list="[]"
+                      name="file"
                       :on-progress="handleProgress"
                       :before-upload="beforeUpload"
                       :on-success="handleSuccess"
+                      :on-error="handleUploadError"
                       :data="{ type: 1 }"
                       multiple
                     >
@@ -183,6 +186,10 @@ import {
 } from '@/api/tools/materialgroup'
 import { getPage, addObj, delObj } from '@/api/tools/material'
 import { getAccessToken } from '@/utils/auth'
+import { useUpload } from '@/components/UploadFile/src/useUpload'
+
+const message = useMessage()
+const { uploadUrl: uploadApi, httpRequest } = useUpload()
 
 const props = defineProps({
   modelValue: {
@@ -259,8 +266,6 @@ const value = computed({
 })
 
 // const store = useStore()
-
-const uploadApi = import.meta.env.VITE_UPLOAD_URL
 
 function moveMaterial(index, type) {
   if (type == 'up') {
@@ -420,7 +425,7 @@ function sizeChange(val) {
   console.log(val)
   page.value.currentPage = 1
   page.value.pageSize = val
-  getMaterialPage(this.page)
+  getMaterialPage(page.value)
 }
 function pageChange(val) {
   console.log(val)
@@ -443,37 +448,61 @@ function materialDel(item) {
 function handleProgress(event) {
   console.log(event)
 }
+const ALLOWED_IMAGE_TYPES = [
+  'image/jpeg',
+  'image/png',
+  'image/gif',
+  'image/webp',
+  'image/bmp'
+]
+const ALLOWED_IMAGE_EXT = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp']
+
+function handleUploadError() {
+  message.error('图片上传失败，请重试')
+}
+
 function handleSuccess(response, file, fileList) {
+  if (response?.code !== 0) {
+    message.error(response?.msg || '图片上传失败')
+    return
+  }
   addObj({
     type: '1',
     groupId: groupId.value != '-1' ? groupId.value : null,
     name: file.name,
     url: response.data
-  }).then(() => {
-    resultNumber.value++
-    //console.log('res:', resultNumber.value)
-    //console.log('fileList:',fileList.length)
-    if (fileList.length === resultNumber.value) {
-      getMaterialPage(page.value)
-      //resultNumber.value = 0
-    }
   })
+    .then(() => {
+      resultNumber.value++
+      if (fileList.length === resultNumber.value) {
+        getMaterialPage(page.value)
+        resultNumber.value = 0
+        message.success('上传完成')
+      }
+    })
+    .catch(() => {
+      message.error('保存素材失败')
+    })
 }
+
 function beforeUpload(file) {
+  let ext = ''
+  if (file.name.lastIndexOf('.') > -1) {
+    ext = file.name.slice(file.name.lastIndexOf('.') + 1).toLowerCase()
+  }
   const isPic =
-    file.type === 'image/jpeg' ||
-    file.type === 'image/png' ||
-    file.type === 'image/gif' ||
-    file.type === 'image/jpg'
+    ALLOWED_IMAGE_TYPES.includes(file.type) ||
+    (!!ext && ALLOWED_IMAGE_EXT.includes(ext))
   const isLt2M = file.size / 1024 / 1024 < 2
   if (!isPic) {
-    this.$message.error('上传图片只能是 JPG、JPEG、PNG、GIF 格式!')
+    message.error('上传图片只能是 JPG、JPEG、PNG、GIF、WebP、BMP 格式!')
     return false
   }
   if (!isLt2M) {
-    this.$message.error('上传头像图片大小不能超过 2MB!')
+    message.error('上传图片大小不能超过 2MB!')
+    return false
   }
-  return isPic && isLt2M
+  return true
 }
 
 const emit = defineEmits(['update:modelValue'])

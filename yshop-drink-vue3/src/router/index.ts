@@ -3,9 +3,9 @@ import type { RouteRecordRaw } from 'vue-router'
 import { createRouter, createWebHistory } from 'vue-router'
 import remainingRouter from './modules/remaining'
 
-// 创建路由实例
+// 创建路由实例（base 须与 vite.config base / 部署子路径一致，否则刷新子路由会 404）
 const router = createRouter({
-  history: createWebHistory(), // createWebHashHistory URL带#，createWebHistory URL不带#
+  history: createWebHistory(import.meta.env.VITE_BASE_PATH),
   strict: true,
   routes: remainingRouter as RouteRecordRaw[],
   scrollBehavior: () => ({ left: 0, top: 0 })

@@ -5,35 +5,48 @@
 	  :title="title"
 	  left-arrow
 	  @leftClick="$onClickLeft"
+	  :bg-color="navBgColor"
+	  :title-style="navTitleStyle"
+	  :left-icon-color="navIconColor"
 	/>
 	<!-- #endif -->
-	<view class="container">
+	<view class="page-wrap">
+		<!-- 商品轮播图 -->
 		<view class="carousel">
-			<swiper indicator-dots circular=true duration="400">
-				<swiper-item class="swiper-item" v-for="(item,index) in product.images" :key="index">
+			<swiper indicator-dots :circular="true" duration="400">
+				<swiper-item class="swiper-item" v-for="(item, index) in product.images" :key="index">
 					<view class="image-wrapper">
-						<image :src="item" class="loaded" @click="previewImage(index)" mode="aspectFill"></image>
+						<image :src="item" class="product-img" @click="previewImage(index)" mode="aspectFill"></image>
 					</view>
 				</swiper-item>
 			</swiper>
 		</view>
 
+		<!-- 商品信息 -->
 		<view class="introduce-section" v-if="product.id">
-			<text class="title">{{product.title}}</text>
-			<view class="price-box bot-row">
-				<text>积分： {{product.score}}</text>
-				<text>销量: {{product.sales}}</text>
-				<text>库存: {{product.stock}}</text>
+			<text class="prod-title">{{ product.title }}</text>
+			<view class="price-box">
+				<view class="score-row">
+					<text class="score-value">{{ product.score }}</text>
+					<text class="score-label"> 积分兑换</text>
+				</view>
+				<view class="meta-row">
+					<text class="meta-item">销量 {{ product.sales }}</text>
+					<text class="meta-divider">·</text>
+					<text class="meta-item">库存 {{ product.stock }}</text>
+				</view>
 			</view>
 		</view>
 
+		<!-- 商品详情富文本 -->
 		<view class="detail-desc" v-if="product.desc">
+			<view class="section-header">商品详情</view>
 			<rich-text :nodes="product.desc"></rich-text>
 		</view>
 
-		<!-- 底部操作菜单 -->
-		<view class="fixed-bottom px-2">
-			<button class="btn" @click="confirm">立即兑换</button>
+		<!-- 底部操作 -->
+		<view class="fixed-bottom">
+			<button class="exchange-btn" @click="confirm">立即兑换</button>
 		</view>
 
 		<uv-toast ref="uToast" />
@@ -43,10 +56,9 @@
 <script setup>
 import {
   ref,
-  computed,
   getCurrentInstance
 } from 'vue'
-import { onReachBottom,onLoad,onPullDownRefresh} from '@dcloudio/uni-app'
+import { onLoad, onPullDownRefresh } from '@dcloudio/uni-app'
 import {
   scoreShopExchange,
   scoreShopDetail
@@ -54,23 +66,13 @@ import {
 import cookie from '@/utils/cookie'
 const { proxy } = getCurrentInstance();
 
-const buttonText = ref("立即兑换")
-const specClass = ref('none')
+const title = ref('商品详情')
+const navBgColor = '#1a1a1a'
+const navTitleStyle = 'color: #F5D061; font-weight: bold;'
+const navIconColor = '#D4AF37'
+
 const product = ref({})
 const id = ref(false)
-const form = ref( 
-	{
-		address: {
-			id: 0,
-			door_number: "",
-			name: "请选择收货地址",
-			address: "",
-			mobile: "",
-		},
-		num: 1 // 兑换数量
-	}
-)
-const lock = ref(false)
 
 onPullDownRefresh(() => {
 	getDetail(id.value);
@@ -81,45 +83,13 @@ onLoad((options) => {
    getDetail(options.id);
 })
 
-
-// 选择地址
-const chooseAddress = () => {
-	uni.navigateTo({
-		url: '/pages/components/pages/address/address?is_choose=true&scene=scoreShop'
-	})
-}
-
 const confirm = () => {
-	cookie.set('score_product',product.value)
+	cookie.set('score_product', product.value)
 	uni.navigateTo({
 		url: '/pages/components/pages/scoreproduct/confirm'
 	})
 }
-// 该表购买数量
-const valChange = (e) => {
-	form.value.num = e.value
-}
-// 获取商品详情
-const  getDetail = async(id, flash_id) => {
-	let data = await scoreShopDetail({
-		id: id
-	});
-	uni.stopPullDownRefresh();
-	product.value = data;
-}
-//规格弹窗开关
-const toggleSpec = () => {
-	if (specClass.value === 'show') {
-		specClass.value = 'hide';
-		setTimeout(() => {
-			specClass.value = 'none';
-		}, 250);
-	} else if (specClass.value === 'none') {
-		specClass.value = 'show';
-	}
-}
-//stopPrevent() {},
-// 查看图片
+
 const previewImage = (index) => {
 	uni.previewImage({
 		current: product.value.images_text[index],
@@ -129,99 +99,142 @@ const previewImage = (index) => {
 	})
 }
 
-
-
+const getDetail = async(id) => {
+	let data = await scoreShopDetail({ id: id });
+	uni.stopPullDownRefresh();
+	product.value = data;
+}
 </script>
 
-<style lang='scss'>
-	.icon-you {
-		color: #888;
+<style lang="scss">
+page {
+	background-color: #121212 !important;
+}
+</style>
+
+<style lang="scss" scoped>
+.page-wrap {
+	background-color: #121212;
+	min-height: 100vh;
+	padding-bottom: 160rpx;
+}
+
+/* 轮播图 */
+.carousel {
+	height: 680rpx;
+	position: relative;
+	background-color: #1E1E1E;
+
+	swiper {
+		height: 100%;
 	}
 
-	.carousel {
-		height: 722upx;
-		position: relative;
-
-		swiper {
-			height: 100%;
-		}
-
-		.image-wrapper {
-			width: 100%;
-			height: 100%;
-		}
-
-		.swiper-item {
-			display: flex;
-			justify-content: center;
-			align-content: center;
-			height: 750upx;
-			overflow: hidden;
-
-			image {
-				width: 100%;
-				height: 100%;
-			}
-		}
-
+	.swiper-item {
+		height: 100%;
 	}
 
-	/* 标题简介 */
-	.introduce-section {
-		background: #fff;
-		padding: 20upx 30upx;
-
-		.title {
-			font-size: 32upx;
-			color: #555555;
-			height: 50upx;
-			line-height: 50upx;
-		}
-
-		.price-box {
-			display: flex;
-			align-items: baseline;
-			height: 64upx;
-			padding: 10upx 0;
-			font-size: 30rpx;
-			color: #5A5B5C;
-		}
-
-		.price {
-			font-size: 35rpx;
-		}
-
-		.bot-row {
-			display: flex;
-			align-items: center;
-
-			text {
-				flex: 1;
-			}
-		}
+	.image-wrapper {
+		width: 100%;
+		height: 100%;
 	}
-	
-	.btn {
-		height: 100rpx;
-		line-height: 100rpx;
-		border-radius: 100rpx;
-		background: #ffcc00;
+
+	.product-img {
+		width: 100%;
+		height: 100%;
+	}
+}
+
+/* 商品信息 */
+.introduce-section {
+	background-color: #1E1E1E;
+	padding: 30rpx;
+	margin-top: 16rpx;
+	border-bottom: 1rpx solid rgba(255, 255, 255, 0.05);
+
+	.prod-title {
+		font-size: 32rpx;
+		font-weight: bold;
+		color: #FFFFFF;
+		line-height: 1.5;
+		display: block;
+		margin-bottom: 20rpx;
+	}
+
+	.price-box {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.score-row {
+		display: flex;
+		align-items: baseline;
+	}
+
+	.score-value {
 		font-size: 40rpx;
-		color: #fff;
-		margin: 30upx auto 20upx;
-		
-	
+		font-weight: bold;
+		color: #F5D061;
 	}
 
-	/*  详情 */
-	.detail-desc {
-		background: #fff;
-		margin-top: 16upx;
-		margin-bottom: 200rpx;
-		padding: 20rpx;
+	.score-label {
+		font-size: 24rpx;
+		color: #9E9E9E;
+		margin-left: 6rpx;
 	}
 
+	.meta-row {
+		display: flex;
+		align-items: center;
+		gap: 10rpx;
+	}
 
-	
+	.meta-item {
+		font-size: 22rpx;
+		color: #9E9E9E;
+	}
 
+	.meta-divider {
+		color: rgba(255, 255, 255, 0.2);
+	}
+}
+
+/* 商品详情 */
+.detail-desc {
+	background-color: #1E1E1E;
+	margin-top: 16rpx;
+	padding: 30rpx;
+
+	.section-header {
+		font-size: 28rpx;
+		font-weight: bold;
+		color: #FFFFFF;
+		padding-bottom: 20rpx;
+		margin-bottom: 20rpx;
+		border-bottom: 1rpx solid rgba(212, 175, 55, 0.2);
+	}
+}
+
+/* 底部按钮 */
+.fixed-bottom {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 20rpx 40rpx;
+	padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+	background: linear-gradient(180deg, transparent 0%, #121212 30%);
+}
+
+.exchange-btn {
+	height: 90rpx;
+	line-height: 90rpx;
+	border-radius: 50rpx;
+	background: linear-gradient(135deg, #E6C655, #D4AF37);
+	font-size: 32rpx;
+	font-weight: bold;
+	color: #1a1a1a;
+	border: none;
+	width: 100%;
+}
 </style>

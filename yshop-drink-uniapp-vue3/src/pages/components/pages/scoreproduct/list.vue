@@ -5,38 +5,47 @@
 	  :title="title"
 	  left-arrow
 	  @leftClick="$onClickLeft"
+	  :bg-color="navBgColor"
+	  :title-style="navTitleStyle"
+	  :left-icon-color="navIconColor"
 	/>
 	<!-- #endif -->
-	<view>
-		<!--商品区-->
-		<uv-waterfall v-model="list" :add-time="0" ref="uWaterfall" @changeList="changeList" :left-gap="10"
-			:right-gap="10"
-			:column-gap="1">
+	<view class="page-wrap">
+		<!-- 商品区 -->
+		<uv-waterfall v-model="list" :add-time="0" ref="uWaterfall" @changeList="changeList" :left-gap="20"
+			:right-gap="20"
+			:column-gap="20">
 			<template v-slot:list1>
-				<view class="demo-warter" v-for="(item, index) in list1" :key="index" @click="goDetail(item)">
-					<image :src="item.image" mode="widthFix" style="width: 300rpx;"></image>
-					<view class="demo-title">
-						{{item.title}}
+				<view class="product-card" v-for="(item, index) in list1" :key="index" @click="goDetail(item)">
+					<view class="card-img-wrap">
+						<image :src="item.image" mode="widthFix" class="card-img"></image>
 					</view>
-					<view class="demo-price">
-						消耗积分:{{item.score}}
+					<view class="card-body">
+						<view class="card-title">{{ item.title }}</view>
+						<view class="card-score">
+							<text class="score-num">{{ item.score }}</text>
+							<text class="score-unit"> 积分</text>
+						</view>
 					</view>
 				</view>
 			</template>
 			<template v-slot:list2>
-				<view class="demo-warter" v-for="(item, index) in list2" :key="index" @click="goDetail(item)">
-					<image :src="item.image" mode="widthFix" style="width: 300rpx;"></image>
-					<view class="demo-title">
-						{{item.title}}
+				<view class="product-card" v-for="(item, index) in list2" :key="index" @click="goDetail(item)">
+					<view class="card-img-wrap">
+						<image :src="item.image" mode="widthFix" class="card-img"></image>
 					</view>
-					<view class="demo-price">
-						消耗积分:{{item.score}}
+					<view class="card-body">
+						<view class="card-title">{{ item.title }}</view>
+						<view class="card-score">
+							<text class="score-num">{{ item.score }}</text>
+							<text class="score-unit"> 积分</text>
+						</view>
 					</view>
 				</view>
 			</template>
 		</uv-waterfall>
-		<uv-load-more v-if="list.length > 0" :status="status"></uv-load-more>
-		<uv-empty v-if="list.length == 0" mode="list"></uv-empty>
+		<uv-load-more v-if="list.length > 0" :status="status" color="#9E9E9E"></uv-load-more>
+		<uv-empty v-if="list.length == 0" mode="list" :icon-color="'#9E9E9E'"></uv-empty>
 	</view>
 </template>
 
@@ -52,7 +61,11 @@ import {
 } from '../../api/score'
 const { proxy } = getCurrentInstance();
 
-const title = ref('积分商品')
+const title = ref('积分商城')
+const navBgColor = '#1a1a1a'
+const navTitleStyle = 'color: #F5D061; font-weight: bold;'
+const navIconColor = '#D4AF37'
+
 const list = ref([])
 const page = ref(1)
 const pagesize = ref(10)
@@ -99,13 +112,11 @@ onPullDownRefresh(() => {
 })
 
 const changeList = (e) => {
-	console.log('e:',e)
 	if(e.name == 'list1'){
 		list1.value.push(e.value)
 	}else{
 		list2.value.push(e.value)
 	}
-	
 }
 const goDetail = (item) => {
 	uni.navigateTo({
@@ -114,17 +125,13 @@ const goDetail = (item) => {
 }
 const  getProduct = async() => {
 	status.value = 'loading';
-	//proxy.$refs.uWaterfall.clear();
-
 	let data = await scoreShopIndex({
 		page: page.value,
 		pagesize: pagesize.value
 	});
-	console.log('data:',data)
 	uni.stopPullDownRefresh();
 	if (data) {
 		list.value = data;
-		console.log('data2:',list.value)
 		if (data.length < pagesize.value) {
 			status.value = 'nomore';
 		}
@@ -133,83 +140,74 @@ const  getProduct = async() => {
 	}
 }
 
-
 </script>
 
 <style lang="scss">
-	.search {
-		margin: 10rpx !important;
+page {
+	background-color: #121212 !important;
+}
+</style>
+
+<style lang="scss" scoped>
+.page-wrap {
+	background-color: #121212;
+	min-height: 100vh;
+	padding: 20rpx 10rpx 40rpx;
+}
+
+.product-card {
+	background-color: #1E1E1E;
+	border-radius: 16rpx;
+	overflow: hidden;
+	margin-bottom: 20rpx;
+	border: 1rpx solid rgba(212, 175, 55, 0.12);
+	box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.4);
+	transition: all 0.2s ease;
+
+	&:active {
+		transform: scale(0.97);
+		border-color: rgba(212, 175, 55, 0.35);
 	}
 
-	.demo-warter {
-		border-radius: 8px;
-		margin: 5px;
-		background-color: #ffcc00;
-		padding: 8px;
-		position: relative;
+	.card-img-wrap {
+		width: 100%;
+		overflow: hidden;
 	}
 
-	.demo-title {
-		font-size: 30rpx;
-		margin-top: 5px;
-		color: #ffffff;
+	.card-img {
+		width: 100%;
+		display: block;
 	}
 
-	.demo-tag {
-		display: flex;
-		margin-top: 5px;
+	.card-body {
+		padding: 16rpx 18rpx 20rpx;
 	}
 
-	.demo-tag-owner {
-		background-color: $uv-error;
+	.card-title {
+		font-size: 26rpx;
 		color: #FFFFFF;
-		display: flex;
-		align-items: center;
-		padding: 4rpx 14rpx;
-		border-radius: 50rpx;
-		font-size: 20rpx;
-		line-height: 1;
+		line-height: 1.4;
+		margin-bottom: 10rpx;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
 	}
 
-	.demo-tag-text {
-		border: 1px solid $uv-primary;
-		color: $uv-primary;
-		margin-left: 10px;
-		border-radius: 50rpx;
-		line-height: 1;
-		padding: 4rpx 14rpx;
+	.card-score {
 		display: flex;
-		align-items: center;
-		border-radius: 50rpx;
-		font-size: 20rpx;
+		align-items: baseline;
 	}
 
-	.demo-price {
+	.score-num {
 		font-size: 30rpx;
-		color: $bg-color;
-		margin-top: 5px;
+		font-weight: bold;
+		color: #F5D061;
 	}
 
-	.demo-shop {
-		font-size: 32rpx;
-		color: #cdad73;
-		margin-top: 5px;
+	.score-unit {
+		font-size: 22rpx;
+		color: #9E9E9E;
 	}
-
-	.page {
-		padding: 10px 0;
-
-		.demo-layout {
-			text-align: center;
-			background-color: #c6caca;
-			border-radius: 20rpx;
-			margin: 5px 0;
-			padding: 3px;
-		}
-
-		.select {
-			background-color: #eea13c;
-			color: #ffffff;
-		}
-	}
+}
 </style>

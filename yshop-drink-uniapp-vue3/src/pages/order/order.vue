@@ -1,31 +1,44 @@
 <template>
-	<uv-navbar
-	  :fixed="false"
-	  :title="title"
-	  left-arrow
-	  @leftClick="$onClickLeft"
-	  bgColor="#121212"
-	  :titleStyle="{ color: '#FFFFFF', fontWeight: 'bold' }"
-	  leftIconColor="#D4AF37"
-	/>
-	<view class="order-page">
-		<view class="tabs-wrap">
-			<uv-tabs
-				:list="tabList"
-				:current="current"
-				@change="change"
-				keyName="name"
-				:scrollable="false"
-				:activeStyle="{ color: '#D4AF37', fontWeight: 'bold', fontSize: '30rpx' }"
-				:inactiveStyle="{ color: '#9E9E9E', fontSize: '26rpx' }"
-				:itemStyle="{ paddingLeft: '0', paddingRight: '0', height: '100rpx' }"
-				:lineStyle="{ backgroundColor: '#D4AF37', height: '4rpx', borderRadius: '4rpx' }"
-				:customStyle="{ backgroundColor: '#1E1E1E', borderBottom: '1rpx solid rgba(255,255,255,0.05)' }"
-			></uv-tabs>
-		</view>
-		
-		<view class="orders-list" v-if="orders.length > 0">
-			<view class="order-card" v-for="(item, index) in orders" :key="index">
+	<view class="order-page-root">
+		<uv-navbar
+		  :fixed="true"
+		  :placeholder="true"
+		  :title="title"
+		  :left-icon="''"
+		  bg-color="#121212"
+		  :title-style="{ color: '#FFFFFF', fontWeight: 'bold' }"
+		  left-icon-color="#D4AF37"
+		/>
+		<view class="order-page">
+			<view class="tabs-wrap">
+				<uv-tabs
+					:list="tabList"
+					:current="current"
+					@change="change"
+					keyName="name"
+					:scrollable="false"
+					:activeStyle="{ color: '#D4AF37', fontWeight: 'bold', fontSize: '30rpx' }"
+					:inactiveStyle="{ color: '#9E9E9E', fontSize: '26rpx' }"
+					:itemStyle="{ paddingLeft: '0', paddingRight: '0', height: '100rpx' }"
+					:lineStyle="{ backgroundColor: '#D4AF37', height: '4rpx', borderRadius: '4rpx' }"
+					:customStyle="{ backgroundColor: '#1E1E1E', borderBottom: '1rpx solid rgba(255,255,255,0.05)' }"
+				></uv-tabs>
+			</view>
+
+			<scroll-view
+				scroll-y
+				class="orders-scroll"
+				:bounces="false"
+				:lower-threshold="80"
+				@scrolltolower="onOrdersScrollToLower"
+				refresher-enabled
+				:refresher-triggered="orderRefresherTriggered"
+				refresher-default-style="black"
+				refresher-background="#121212"
+				@refresherrefresh="onOrderRefresherRefresh"
+			>
+				<view class="orders-list" v-if="orders.length > 0">
+					<view class="order-card" v-for="(item, index) in orders" :key="index">
 				<!-- Order Header -->
 				<view class="order-header">
 					<view class="shop-name">{{ item.shop.name }}</view>
@@ -73,11 +86,13 @@
 					<view class="action-btn detail-btn" @tap="detail(item.orderId)">
 						订单详情
 					</view>
+					</view>
+					</view>
 				</view>
-			</view>
+
+				<uv-empty v-if="orders.length == 0" mode="order" :iconStyle="{ color: '#D4AF37' }"></uv-empty>
+			</scroll-view>
 		</view>
-		
-		<uv-empty v-if="orders.length == 0" mode="order" :iconStyle="{ color: '#D4AF37' }"></uv-empty>
 	</view>
 </template>
 
@@ -89,7 +104,7 @@ import {
 } from 'vue'
 import { useMainStore } from '@/store/store'
 import { storeToRefs } from 'pinia'
-import { onLoad, onPullDownRefresh, onReachBottom } from '@dcloudio/uni-app'
+import { onLoad } from '@dcloudio/uni-app'
 import { formatDateTime } from '@/utils/util'
 import {
   orderGetOrders,
@@ -122,6 +137,17 @@ const tabList = ref([{
 const current = ref(0)
 const type = ref(-1)
 
+const orderRefresherTriggered = ref(false)
+
+const onOrderRefresherRefresh = async () => {
+	orderRefresherTriggered.value = true
+	try {
+		await getOrders(true)
+	} finally {
+		orderRefresherTriggered.value = false
+	}
+}
+
 const goodsNum = computed(() => {
 	return (goods) => {
 		let num = 0;
@@ -143,12 +169,10 @@ onLoad(() => {
 	}
 	getOrders(false)
 })
-onPullDownRefresh(() => {
+
+const onOrdersScrollToLower = () => {
 	getOrders(false)
-})
-onReachBottom(() => {
-	getOrders(false)
-})
+}
 
 const change = (e) => {
 	current.value = e.index
@@ -169,7 +193,6 @@ const getOrders = async(isRefresh = false) => {
 			page.value += 1
 		}
 	} finally {
-		uni.stopPullDownRefresh()
 		uni.hideLoading()
 	}
 }
@@ -192,16 +215,33 @@ page {
 	background-color: #121212 !important;
 }
 
-.order-page {
+.order-page-root {
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
 	background-color: #121212;
-	min-height: 100vh;
+}
+
+.order-page {
+	flex: 1;
+	min-height: 0;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	background-color: #121212;
 }
 
 .tabs-wrap {
+	flex-shrink: 0;
 	background-color: #1E1E1E;
-	position: sticky;
-	top: 0;
-	z-index: 100;
+}
+
+.orders-scroll {
+	flex: 1;
+	min-height: 0;
+	height: 0;
+	background-color: #121212;
 }
 
 .orders-list {

@@ -1,22 +1,30 @@
 <template>
   <view class="cart-page">
-    <!-- Header -->
-    <view class="cart-header">
-      <view class="header-title">购物车</view>
-      <view class="header-count" v-if="cart.length > 0">共 {{ getCartGoodsNumber }} 件</view>
-      <view class="clear-btn" v-if="cart.length > 0" @tap="handleCartClear">清空</view>
+    <uv-navbar
+      :fixed="true"
+      :placeholder="true"
+      title="购物车"
+      :left-icon="''"
+      bg-color="#121212"
+      :title-style="{ color: '#FFFFFF', fontWeight: 'bold' }"
+      left-icon-color="#D4AF37"
+    />
+
+    <view class="cart-toolbar" v-if="cart.length > 0">
+      <view class="header-count">共 {{ getCartGoodsNumber }} 件</view>
+      <view class="clear-btn" @tap="handleCartClear">清空</view>
     </view>
 
     <!-- Empty -->
     <view class="empty-wrap" v-if="cart.length == 0">
       <view class="empty-icon">🍺</view>
       <view class="empty-text">购物车空空如也</view>
-      <view class="empty-sub">去点餐页面添加精酿好物吧</view>
-      <view class="go-order-btn" @tap="goMenu">去点餐</view>
+      <view class="empty-sub">去点酒页面添加精酿好物吧</view>
+      <view class="go-order-btn" @tap="goMenu">去点酒</view>
     </view>
 
     <!-- Cart List -->
-    <scroll-view scroll-y class="cart-list" v-if="cart.length > 0">
+    <scroll-view scroll-y class="cart-list" v-if="cart.length > 0" :bounces="false">
       <view class="cart-item" v-for="(item, index) in cart" :key="index">
         <view class="item-info">
           <view class="item-name">{{ item.name }}</view>
@@ -96,7 +104,7 @@ const goMenu = () => {
 }
 const toPay = () => {
   if (cart.value.length == 0) {
-    uToast.value.show({ message: '请先去点餐哦', type: 'error' })
+    uToast.value.show({ message: '请先去点酒哦', type: 'error' })
     return
   }
   if (!isLogin.value) {
@@ -123,27 +131,25 @@ page {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  overflow: hidden;
   background-color: #121212;
 }
 
-/* Header */
-.cart-header {
+.cart-toolbar {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
-  padding: 60rpx 30rpx 20rpx;
+  justify-content: flex-end;
+  padding: 16rpx 30rpx;
   background-color: #1E1E1E;
   border-bottom: 1rpx solid rgba(255,255,255,0.05);
 
-  .header-title {
-    font-size: 36rpx;
-    font-weight: bold;
-    color: #FFFFFF;
-    flex: 1;
-  }
   .header-count {
     font-size: 24rpx;
     color: #9E9E9E;
     margin-right: 20rpx;
+    flex: 1;
+    text-align: left;
   }
   .clear-btn {
     font-size: 24rpx;
@@ -194,6 +200,8 @@ page {
 /* Cart List */
 .cart-list {
   flex: 1;
+  min-height: 0;
+  height: 0;
   overflow: hidden;
   padding: 0 25rpx;
   padding-bottom: 20rpx;
@@ -277,6 +285,7 @@ page {
 
 /* Bottom Bar */
 .cart-bottom {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;

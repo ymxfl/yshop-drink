@@ -3,7 +3,10 @@
     {
       "path": "pages/index/index",
       "style": {
-        "navigationBarTitleText": "首页"
+        "navigationBarTitleText": "首页",
+        "navigationBarBackgroundColor": "#121212",
+        "navigationBarTextStyle": "white",
+        "backgroundColor": "#121212"
       }
     },
    
@@ -11,8 +14,11 @@
             "path" : "pages/menu/menu",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "点餐",
-                "enablePullDownRefresh": true
+                "navigationStyle": "custom",
+                "navigationBarTitleText": "点酒",
+                "backgroundColor": "#121212",
+                "enablePullDownRefresh": false,
+                "disableScroll": true
             }
             
         }
@@ -20,8 +26,11 @@
             "path" : "pages/order/order",
             "style" :                                                                                    
             {
+                "navigationStyle": "custom",
                 "navigationBarTitleText": "订单",
-                "enablePullDownRefresh": true
+                "backgroundColor": "#121212",
+                "enablePullDownRefresh": false,
+                "disableScroll": true
             }
             
         }
@@ -29,8 +38,11 @@
             "path" : "pages/mine/mine",
             "style" :                                                                                    
             {
+                "navigationStyle": "custom",
                 "navigationBarTitleText": "我的",
-                "enablePullDownRefresh": true
+                "backgroundColor": "#121212",
+                "enablePullDownRefresh": false,
+                "disableScroll": true
             }
             
         }
@@ -38,8 +50,11 @@
             "path" : "pages/cart/cart",
             "style" :                                                                                    
             {
+                "navigationStyle": "custom",
                 "navigationBarTitleText": "购物车",
-                "enablePullDownRefresh": false
+                "backgroundColor": "#121212",
+                "enablePullDownRefresh": false,
+                "disableScroll": true
             }
             
         }
@@ -123,10 +138,13 @@
 			}, {
 				"path": "pages/coupons/coupons",
 				"style": {
-					"enablePullDownRefresh": true,
+					"navigationStyle": "custom",
 					"navigationBarTitleText": "我的卡券",
-					"navigationBarTextStyle": "black",
-					"navigationBarBackgroundColor": "#ffffff"
+					"navigationBarBackgroundColor": "#121212",
+					"navigationBarTextStyle": "white",
+					"backgroundColor": "#121212",
+					"enablePullDownRefresh": false,
+					"disableScroll": true
 				}
 			}, {
 				"path": "pages/mine/userinfo",
@@ -218,7 +236,7 @@
   			},
   			{
   				"pagePath": "pages/menu/menu",
-  				"text": "点餐",
+  				"text": "点酒",
   				"iconPath": "static/images/tabBar/drink.png",
   				"selectedIconPath": "static/images/tabBar/drink-selected.png"
   			}, {

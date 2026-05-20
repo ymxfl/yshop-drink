@@ -1,26 +1,26 @@
 <template>
-  <scroll-view scroll-y class="page-wrap" :show-scrollbar="false" :style="{ height: pageHeight }">
+  <scroll-view
+    scroll-y
+    class="page-wrap"
+    :show-scrollbar="false"
+    :bounces="false"
+    :style="{ height: pageHeight }"
+  >
     <!-- Banner Section -->
-    <view class="banner-section">
+    <view class="banner-section" :style="{ height: bannerHeight + 'px' }">
       <uv-swiper
         v-if="listAds.length"
         class="bg-swiper"
-        height="460"
+        :height="bannerHeight"
         imgMode="aspectFill"
         keyName="image"
         :list="listAds"
         indicatorMode="dot"
         indicatorStyle="bottom"
       ></uv-swiper>
-      <view v-else class="bg-swiper-fallback">
-        <image src="/static/images/banners/home-banner.png" mode="aspectFill" class="fallback-img"></image>
-      </view>
+      <view v-else class="bg-swiper-fallback"></view>
       
-      <!-- Text Overlay -->
-      <view class="banner-overlay-text">
-        <view class="title-line">极客精酿</view>
-        <view class="subtitle-line">每日新鲜送达</view>
-      </view>
+
     </view>
 
     <!-- Main Content Container -->
@@ -67,7 +67,7 @@
           <!-- Coins SVG -->
           <image class="stat-icon" :src="statCoinIcon" mode="aspectFit"></image>
           <view class="stat-text">
-            <text class="label">积分</text>
+            <text class="label">会员积分</text>
             <text class="value">{{ isLogin ? (member.integral || 0) : 0 }}</text>
           </view>
         </view>
@@ -76,7 +76,7 @@
           <!-- Wallet SVG -->
           <image class="stat-icon" :src="statWalletIcon" mode="aspectFit"></image>
           <view class="stat-text">
-            <text class="label">余额</text>
+            <text class="label">账户余额</text>
             <text class="value">¥{{ isLogin ? parseFloat(member.nowMoney || 0).toFixed(2) : '0.00' }}</text>
           </view>
         </view>
@@ -85,7 +85,7 @@
           <!-- Ticket SVG -->
           <image class="stat-icon" :src="statTicketIcon" mode="aspectFit"></image>
           <view class="stat-text">
-            <text class="label">卡券</text>
+            <text class="label">可用卡券</text>
             <text class="value">{{ isLogin ? (member.couponCount || 0) : 0 }}张</text>
           </view>
         </view>
@@ -138,7 +138,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
 import { menuAds } from '@/api/market'
 import { userGetUserInfo } from '@/api/user'
@@ -158,18 +158,35 @@ const gridCouponsIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgM
 const gridScoreIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMTIiIGN5PSI4IiByPSI1IiBzdHJva2U9IiNENEFGMzciIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHBhdGggZD0iTTQgMjBjMC0zLjMgMy42LTYgOC02czggMi43IDggNiIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0xMCA4aDRNMTIgNnY0IiBzdHJva2U9IiNENEFGMzciIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+"
 const gridInviteIcon = "data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHBhdGggZD0iTTIwIDEydjEwSDRWMTIiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cmVjdCB4PSIyIiB5PSI3IiB3aWR0aD0iMjAiIGhlaWdodD0iNSIgcng9IjEiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNMTIgMjJWNyIgc3Ryb2tlPSIjRDRBRjM3IiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjxwYXRoIGQ9Ik0xMiA3Yy0xLjUtMy00LjUtMy00LjUgMFMxMC41IDcgMTIgN1oiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48cGF0aCBkPSJNMTIgN2MxLjUtMyA0LjUtMyA0LjUgMFMxMy41IDcgMTIgN1oiIHN0cm9rZT0iI0Q0QUYzNyIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L3N2Zz4="
 
+// 小程序 tab 页可用高度用 windowHeight（已扣导航与 tabBar），避免 100vh 与 scroll-view 计算不准导致无法滚动
+const pageHeight = ref('100%')
+// 轮播高度随屏幕宽度按 750:560 比例自适应（与 uv-swiper 的 rpx 高度一致）
+const bannerHeight = computed(() => {
+  try {
+    const sys = uni.getSystemInfoSync()
+    if (sys?.windowWidth) {
+      return Math.round(sys.windowWidth * 560 / 750)
+    }
+  } catch (e) {
+    /* ignore */
+  }
+  return 280
+})
+
+function updatePageHeight() {
+  try {
+    const sys = uni.getSystemInfoSync()
+    if (sys && sys.windowHeight) {
+      pageHeight.value = `${sys.windowHeight}px`
+    }
+  } catch (e) {
+    /* ignore */
+  }
+}
+
 const main = useMainStore()
 const { member, store, isLogin } = storeToRefs(main)
 const listAds = ref([])
-
-// 计算不含tabBar的页面高度
-const pageHeight = ref('100vh')
-onMounted(() => {
-  const info = uni.getSystemInfoSync()
-  const safeAreaBottom = info.safeAreaInsets ? info.safeAreaInsets.bottom : 0
-  const tabBarHeight = 50 + safeAreaBottom
-  pageHeight.value = `calc(100vh - ${tabBarHeight}px)`
-})
 
 const handGetListAds = async () => {
   let shop_id = store.value.id ? store.value.id : 0
@@ -229,8 +246,14 @@ const getUserInfo = async () => {
   }
 }
 
-onLoad(() => { handGetListAds() })
-onShow(() => { getUserInfo() })
+onLoad(() => {
+  updatePageHeight()
+  handGetListAds()
+})
+onShow(() => {
+  updatePageHeight()
+  getUserInfo()
+})
 </script>
 
 <style lang="scss">
@@ -249,22 +272,31 @@ page {
 .banner-section {
   position: relative;
   width: 100%;
-  height: 460rpx;
   overflow: hidden;
 
   .bg-swiper {
     width: 100%;
     height: 100%;
+
+    :deep(.uv-swiper),
+    :deep(.uv-swiper__wrapper),
+    :deep(.uv-swiper__wrapper__item),
+    :deep(.uv-swiper__wrapper__item__wrapper) {
+      width: 100%;
+      height: 100%;
+    }
+
+    :deep(.uv-swiper__wrapper__item__wrapper__image) {
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
+    }
   }
 
   .bg-swiper-fallback {
     width: 100%;
     height: 100%;
-    .fallback-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+    background: linear-gradient(145deg, #1a1510 0%, #2a2218 35%, #141820 70%, #121212 100%);
   }
 
   &::after {
@@ -276,28 +308,6 @@ page {
     z-index: 1;
   }
 
-  .banner-overlay-text {
-    position: absolute;
-    left: 40rpx;
-    bottom: 50rpx;
-    z-index: 2;
-
-    .title-line {
-      font-size: 58rpx;
-      font-weight: 800;
-      color: #F5D061;
-      letter-spacing: 4rpx;
-      text-shadow: 0 4rpx 16rpx rgba(0,0,0,0.8);
-      margin-bottom: 6rpx;
-    }
-    .subtitle-line {
-      font-size: 50rpx;
-      font-weight: 700;
-      color: #F5D061;
-      letter-spacing: 4rpx;
-      text-shadow: 0 4rpx 16rpx rgba(0,0,0,0.8);
-    }
-  }
 }
 
 /* ---- Content ---- */

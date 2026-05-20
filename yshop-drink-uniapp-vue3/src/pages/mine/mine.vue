@@ -1,14 +1,15 @@
 <template>
-	<layout>
+	<view class="mine-page-root">
 		<uv-navbar
-		  :fixed="false"
+		  :fixed="true"
+		  :placeholder="true"
 		  :title="title"
-		  left-arrow
-		  @leftClick="$onClickLeft"
-		  bgColor="#121212"
-		  :titleStyle="{ color: '#FFFFFF', fontWeight: 'bold' }"
-		  leftIconColor="#D4AF37"
+		  :left-icon="''"
+		  bg-color="#121212"
+		  :title-style="{ color: '#FFFFFF', fontWeight: 'bold' }"
+		  left-icon-color="#D4AF37"
 		/>
+		<scroll-view scroll-y class="mine-scroll" :bounces="false">
 		<view class="mine-page">
 			<!-- Hero Banner -->
 			<view class="hero-banner">
@@ -103,7 +104,8 @@
 				</view>
 			</view>
 		</view>
-	</layout>
+		</scroll-view>
+	</view>
 </template>
 
 <script setup>
@@ -190,9 +192,24 @@ page {
 	background-color: #121212 !important;
 }
 
+.mine-page-root {
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	background-color: #121212;
+}
+
+.mine-scroll {
+	flex: 1;
+	min-height: 0;
+	height: 0;
+	background-color: #121212;
+}
+
 .mine-page {
 	background-color: #121212;
-	min-height: 100vh;
+	padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
 }
 
 .hero-banner {
