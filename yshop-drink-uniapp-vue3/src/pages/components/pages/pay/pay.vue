@@ -4,6 +4,9 @@
 	  :title="title"
 	  left-arrow
 	  @leftClick="$onClickLeft"
+	  bgColor="#121212"
+	  :titleStyle="{ color: '#FFFFFF', fontWeight: 'bold' }"
+	  leftIconColor="#D4AF37"
 	/>
 	<view class="container position-relative">
 		<view style="margin-bottom: 130rpx;">
@@ -184,11 +187,12 @@
 		</view>
 		<!-- 付款栏 begin -->
 		<view style="z-index: 1;"
-			class="w-100 pay-box position-fixed fixed-bottom d-flex align-items-center justify-content-between bg-white">
-			<view class="font-size-sm" style="margin-left: 20rpx;">合计：</view>
-			<view class="font-size-lg flex-fill">￥{{ amount }}</view>
-			<view class="bg-primary h-100 d-flex align-items-center just-content-center text-color-white font-size-base"
-				style="padding: 0 60rpx;" @tap="debouncedSubmit">付款</view>
+			class="w-100 pay-box position-fixed fixed-bottom d-flex align-items-center justify-content-between">
+			<view class="pay-info">
+				<view class="pay-label">应付金额</view>
+				<view class="pay-amount">￥{{ amount }}</view>
+			</view>
+			<view class="pay-submit-btn" @tap="debouncedSubmit">立即付款</view>
 		</view>
 		<!-- 付款栏 end -->
 		<modal :show="ensureAddressModalVisible" custom :mask-closable="false" :radius="'0rpx'" width="90%">
@@ -712,8 +716,12 @@ const aliPay = async(order) => {
 </script>
 
 <style lang="scss" scoped>
+page {
+	background-color: #121212 !important;
+}
 	.container {
-		padding: 30rpx;
+		padding: 25rpx;
+		background-color: #121212;
 	}
 
 	.arrow {
@@ -777,31 +785,76 @@ const aliPay = async(order) => {
 	}
 
 	.pay-box {
-		box-shadow: 0 0 20rpx rgba(0, 0, 0, 0.1);
-		height: 100rpx;
+		box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.4);
+		height: 110rpx;
+		background-color: #1E1E1E;
+		border-top: 1rpx solid rgba(212, 175, 55, 0.3);
+		padding: 0 30rpx;
+		
+		.pay-info {
+			display: flex;
+			flex-direction: column;
+			
+			.pay-label {
+				font-size: 22rpx;
+				color: #9E9E9E;
+			}
+			
+			.pay-amount {
+				font-size: 40rpx;
+				font-weight: bold;
+				color: #D4AF37;
+			}
+		}
+		
+		.pay-submit-btn {
+			background: linear-gradient(135deg, #E6C655 0%, #D4AF37 100%);
+			color: #121212;
+			font-weight: bold;
+			font-size: 30rpx;
+			padding: 20rpx 60rpx;
+			border-radius: 50rpx;
+			box-shadow: 0 4rpx 20rpx rgba(212, 175, 55, 0.3);
+			transition: all 0.2s ease;
+			
+			&:active {
+				transform: scale(0.97);
+			}
+		}
 	}
 
 	.modal-content {
+		background-color: #1E1E1E;
+		color: #FFFFFF;
+		padding: 30rpx;
+		border-radius: 16rpx;
+		
 		.change-address-btn {
 			line-height: 2;
 			padding: 0 1em;
+			color: #D4AF37;
+			border-color: #D4AF37;
+			background-color: transparent;
 		}
 
 		.pay_btn {
 			width: 100%;
 			border-radius: 50rem !important;
 			line-height: 3;
+			background: linear-gradient(135deg, #E6C655 0%, #D4AF37 100%) !important;
+			color: #121212 !important;
+			font-weight: bold;
 		}
 	}
 
 	.choice {
-		background-color: $bg-color-grey;
+		background-color: #2A2A2A;
 		border-radius: 38rpx;
 		display: flex;
 		align-items: center;
 		font-size: $font-size-sm;
 		padding: 0 38rpx;
-		color: $text-color-assist;
+		color: #9E9E9E;
 
 		.dinein,
 		.takeout {
@@ -809,11 +862,12 @@ const aliPay = async(order) => {
 			position: relative;
 			display: flex;
 			align-items: center;
+			font-weight: bold;
 
 			&.active {
 				padding: 14rpx 38rpx;
-				color: #ffffff;
-				background-color: $color-primary;
+				color: #121212;
+				background: linear-gradient(135deg, #E6C655 0%, #D4AF37 100%);
 				border-radius: 38rpx;
 			}
 		}
@@ -824,13 +878,15 @@ const aliPay = async(order) => {
 			flex: 1;
 			padding: 14rpx 0;
 		}
-
-		.dinein.active {
-			//margin-left: -38rpx;
+	}
+	
+	/* Payment method checkboxes */
+	.payment {
+		.checked {
+			color: #D4AF37 !important;
 		}
-
-		.takeout.active {
-			//margin-right: -38rpx;
+		.payment-icon {
+			margin-right: 16rpx;
 		}
 	}
 </style>

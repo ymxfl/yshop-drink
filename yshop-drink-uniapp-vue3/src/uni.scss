@@ -14,27 +14,25 @@
 
 /* 颜色变量 */
 /* 行为相关颜色 */
-// $color-primary: #ADB838;
-$color-primary: #09b4f1;
+$color-primary: #D4AF37;
 $color-success: #4cd964;
 $color-warning: #FAB714;
 $color-error: #D12E32;
 
 /* 文字基本颜色 */
-$text-color-base: #5A5B5C; //基本色
+$text-color-base: #FFFFFF; //基本色为白色
 $text-color-assist: #919293; //辅助色
-$text-color-black: #3B3C3E; //黑
+$text-color-black: #EAEAEA; //次高亮文字
 $text-color-grey: #878889; //灰
 $text-color-white: #ffffff; //白
 
 /* 背景颜色 */
-$bg-color: #F1F8FA;
-$bg-color-grey: #F5F5F5;
-//$bg-color-primary: #E8EACF;
-$bg-color-primary: #dbe7ea;
+$bg-color: #121212; // 暗黑主题背景
+$bg-color-grey: #1E1E1E; // 卡片背景
+$bg-color-primary: #262626;
 
 /* 边框颜色 */
-$border-color:#e2e2e2;
+$border-color:#2E2E2E;
 
 /* 尺寸变量 */
 
@@ -68,30 +66,28 @@ $spacing-col-lg: 24rpx;
 $opacity-disabled: 0.3; // 组件禁用态的透明度
 
 /* 文章场景相关 */
-$color-title: #2C405A; // 文章标题颜色
+$color-title: #FFFFFF; // 文章标题颜色
 $font-size-title:40rpx;
-$color-subtitle: #555555; // 二级标题颜色
+$color-subtitle: #9E9E9E; // 二级标题颜色
 $font-size-subtitle:36rpx;
-$color-paragraph: #3F536E; // 文章段落颜色
+$color-paragraph: #EAEAEA; // 文章段落颜色
 $font-size-paragraph:30rpx;
 
-$box-shadow: 0 20rpx 20rpx -20rpx rgba($color: #333, $alpha: 0.1);
+$box-shadow: 0 20rpx 20rpx -20rpx rgba($color: #000, $alpha: 0.5);
+$box-shadow-dark: 0 4rpx 20rpx rgba(0, 0, 0, 0.4);
 
-
-
-
-$uv-main-color: #333333;
-$uv-content-color: #999999;
+$uv-main-color: #FFFFFF;
+$uv-content-color: #EAEAEA;
 $uv-tips-color: #909193;
-$uv-light-color: #c0c4cc;
-$uv-border-color: #dadbde;
-$uv-bg-color: #f3f4f6;
-$uv-disabled-color: #c8c9cc;
+$uv-light-color: #555555;
+$uv-border-color: #2E2E2E;
+$uv-bg-color: #1E1E1E;
+$uv-disabled-color: #555555;
 
-$uv-primary: #EE6D46;
-$uv-primary-dark: #EE6D46;
-$uv-primary-disabled: #FDEDE8;
-$uv-primary-light: #ecf5ff;
+$uv-primary: #D4AF37;
+$uv-primary-dark: #C5A02E;
+$uv-primary-disabled: #4A4020;
+$uv-primary-light: #2A2410;
 
 $uv-warning: #f9ae3d;
 $uv-warning-dark: #f1a532;
@@ -112,6 +108,7 @@ $uv-info: #909399;
 $uv-info-dark: #767a82;
 $uv-info-disabled: #c4c6c9;
 $uv-info-light: #f4f4f5;
+
 
 
 @import '~@/static/iconfont/iconfont.scss';

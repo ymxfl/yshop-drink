@@ -576,6 +576,18 @@ const showGoodDetailModal = (item, newGood) => {
 		...newGood,
 		number: 1
 	}))
+	
+	if (!good.value.productAttr) {
+		good.value.productAttr = [];
+	}
+	const hasTemp = good.value.productAttr.some(attr => attr.attrName === '饮用温度');
+	if (!hasTemp) {
+		good.value.productAttr.push({
+			attrName: '饮用温度',
+			attrValueArr: ['冰镇 4°C', '常温 15°C', '暖啤 35°C']
+		});
+	}
+	
 	category.value = JSON.parse(JSON.stringify(item))
 	goodDetailModalVisible.value = true;
 	console.log('goodDetailModalVisible:',goodDetailModalVisible.value)
@@ -594,32 +606,35 @@ const changePropertyDefault = (index, key, isDefault) => { //改变默认属性�
 		for(let i = 0;i < good.value.productAttr.length;i++){
 			newValue.value[i] = good.value.productAttr[i].attrValueArr[0]
 		}
-
-		//valueStr = newValue.value.join(',')
-
 	}else{
 		newValue.value[index] = good.value.productAttr[index].attrValueArr[key]
-		//valueStr = newValue.value.join(',')
 	}
 	
 	valueStr = newValue.value.join(',')
-	let productValue = good.value.productValue[valueStr]
-	if(!productValue) {
-		let skukey = JSON.parse(JSON.stringify(newValue.value))
-		skukey.sort((a, b) => a.localeCompare(b))
-		//console.log('skukey:',skukey)
-		valueStr = skukey.join(',')
-		productValue = good.value.productValue[valueStr]
-	}
-
 	
-	//let productValue = good.value.productValue[valueStr]
+	let skuValues = [];
+	for (let i = 0; i < good.value.productAttr.length; i++) {
+		if (good.value.productAttr[i].attrName !== '饮用温度') {
+			skuValues.push(newValue.value[i]);
+		}
+	}
+	let skuStr = skuValues.join(',');
+	
+	let productValue = good.value.productValue[skuStr]
+	if(!productValue) {
+		let skukey = JSON.parse(JSON.stringify(skuValues))
+		skukey.sort((a, b) => a.localeCompare(b))
+		skuStr = skukey.join(',')
+		productValue = good.value.productValue[skuStr]
+	}
+	
+	if (productValue) {
+		good.value.price = parseFloat(productValue.price).toFixed(2);
+		good.value.stock = productValue.stock;
+		good.value.image = productValue.image ? productValue.image : good.value.image;
+	}
 	good.value.number = 1;
-	good.value.price = parseFloat(productValue.price).toFixed(2);
-	good.value.stock = productValue.stock;
-	good.value.image = productValue.image ? productValue.image : good.value.image;
 	good.value.valueStr = valueStr
-
 }
 const handlePropertyAdd = () => {
 	good.value.number += 1
@@ -718,6 +733,7 @@ const toPay = () => {
 	.container {
 		overflow: hidden;
 		position: relative;
+		background-color: #121212;
 	}
 	
 	.loading {
@@ -726,6 +742,7 @@ const toPay = () => {
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		background-color: #121212;
 	
 		image {
 			width: 260rpx;
@@ -743,11 +760,11 @@ const toPay = () => {
 		width: 100%;
 		height: 100%;
 		position: relative;
+		background-color: #121212;
 	}
 	
 	.nav {
 		width: 100%;
-		//height: 212rpx;
 		height: 140rpx;
 		display: flex;
 		flex-direction: column;
@@ -757,9 +774,11 @@ const toPay = () => {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			padding: 20rpx;
-			background-color: #ffffff;
+			padding: 20rpx 30rpx;
+			background-color: #1E1E1E;
+			border-bottom: 1rpx solid rgba(255, 255, 255, 0.05);
 			height: 140rpx;
+			color: #FFFFFF;
 	
 			.left {
 				flex: 1;
@@ -770,15 +789,18 @@ const toPay = () => {
 					display: flex;
 					justify-content: flex-start;
 					align-items: center;
-					font-size: $font-size-lg;
-					margin-bottom: 10rpx;
+					font-size: 32rpx;
+					font-weight: bold;
+					margin-bottom: 8rpx;
+					color: #FFFFFF;
 					.small {
 						font-size: $font-size-sm;
-						color: $text-color-assist;
+						color: #9E9E9E;
 					}
 					.iconfont {
 						margin-left: 10rpx;
 						line-height: 100%;
+						color: #D4AF37;
 					}
 				}
 	
@@ -786,7 +808,7 @@ const toPay = () => {
 					display: flex;
 					justify-content: flex-start;
 					align-items: center;
-					color: $text-color-assist;
+					color: #9E9E9E;
 					font-size: $font-size-sm;
 	
 					.iconfont {
@@ -799,24 +821,26 @@ const toPay = () => {
 			}
 	
 			.right {
-				background-color: $bg-color-grey;
+				background-color: #2A2A2A;
 				border-radius: 38rpx;
 				display: flex;
 				align-items: center;
 				font-size: $font-size-sm;
 				padding: 0 38rpx;
-				color: $text-color-assist;
+				color: #9E9E9E;
+				height: 64rpx;
 	
 				.dinein,
 				.takeout {
 					position: relative;
 					display: flex;
 					align-items: center;
+					color: #9E9E9E;
+					font-weight: bold;
 					&.active {
-						padding: 14rpx 38rpx;
-						color: #ffffff;
-						background-color: $color-primary;
-						//background-color: #5A5B5C;
+						padding: 10rpx 30rpx;
+						color: #121212;
+						background: linear-gradient(135deg, #E6C655 0%, #D4AF37 100%);
 						border-radius: 38rpx;
 					}
 				}
@@ -837,7 +861,6 @@ const toPay = () => {
 				}
 			}
 		}
-
 	}
 	
 	.content {
@@ -847,12 +870,13 @@ const toPay = () => {
 		height: calc(100vh - 212rpx - 188rpx);
 		/* #endif */
 		display: flex;
+		background-color: #121212;
 	
 		.menus {
 			width: 200rpx;
 			height: 100%;
 			overflow: hidden;
-			background-color: $bg-color-grey;
+			background-color: #121212;
 	
 			.wrapper {
 				width: 100%;
@@ -862,25 +886,39 @@ const toPay = () => {
 					display: flex;
 					align-items: center;
 					justify-content: flex-start;
-					padding: 30rpx 20rpx;
+					padding: 35rpx 20rpx;
 					font-size: 26rpx;
-					color: $text-color-assist;
+					color: #9E9E9E;
 					position: relative;
+					background-color: #121212;
+					transition: all 0.2s ease;
 	
 					&.current {
-						background-color: #ffffff;
-						color: $text-color-base;
+						background-color: #1E1E1E;
+						color: #D4AF37;
+						font-weight: bold;
+						
+						&::before {
+							content: '';
+							position: absolute;
+							left: 0;
+							top: 25%;
+							height: 50%;
+							width: 6rpx;
+							background-color: #D4AF37;
+							border-radius: 0 4rpx 4rpx 0;
+						}
 					}
 	
 					.dot {
 						position: absolute;
-						width: 34rpx;
-						height: 34rpx;
-						line-height: 34rpx;
-						font-size: 22rpx;
-						background-color: $color-primary;
-						//background-color: #5A5B5C;
-						color: #ffffff;
+						width: 32rpx;
+						height: 32rpx;
+						line-height: 32rpx;
+						font-size: 20rpx;
+						background-color: #D4AF37;
+						color: #121212;
+						font-weight: bold;
 						top: 16rpx;
 						right: 10rpx;
 						border-radius: 100%;
@@ -897,20 +935,22 @@ const toPay = () => {
 			flex: 1;
 			height: 100%;
 			overflow: hidden;
-			background-color: #ffffff;
+			background-color: #1E1E1E;
 	
 			.wrapper {
 				width: 100%;
 				height: 100%;
 				padding: 20rpx;
+				background-color: #1E1E1E;
 	
 				.ads {
 					height: calc(300 / 550 * 510rpx);
+					margin-bottom: 20rpx;
 	
 					image {
 						width: 100%;
 						height: 100%;
-						border-radius: 8rpx;
+						border-radius: 16rpx;
 					}
 				}
 	
@@ -925,7 +965,9 @@ const toPay = () => {
 							padding: 30rpx 0;
 							display: flex;
 							align-items: center;
-							color: $text-color-base;
+							color: #FFFFFF;
+							font-weight: bold;
+							font-size: 30rpx;
 	
 							.icon {
 								width: 38rpx;
@@ -941,18 +983,26 @@ const toPay = () => {
 					.items {
 						display: flex;
 						flex-direction: column;
-						padding-bottom: -30rpx;
 	
 						.good {
 							display: flex;
 							align-items: center;
-							//margin-bottom: 30rpx;
-							padding: 15rpx 0;
+							padding: 20rpx;
+							background-color: rgba(255, 255, 255, 0.02);
+							border: 1rpx solid rgba(255, 255, 255, 0.05);
+							border-radius: 16rpx;
+							margin-bottom: 20rpx;
+							transition: all 0.2s ease;
+							
+							&:active {
+								background-color: rgba(255, 255, 255, 0.05);
+							}
+							
 							.image {
 								width: 160rpx;
 								height: 160rpx;
 								margin-right: 20rpx;
-								border-radius: 8rpx;
+								border-radius: 16rpx;
 							}
 	
 							.right {
@@ -963,11 +1013,13 @@ const toPay = () => {
 								flex-direction: column;
 								align-items: flex-start;
 								justify-content: space-between;
-								padding-right: 14rpx;
+								padding-right: 10rpx;
 	
 								.name {
-									font-size: $font-size-base;
-									margin-bottom: 10rpx;
+									font-size: 28rpx;
+									font-weight: bold;
+									color: #FFFFFF;
+									margin-bottom: 8rpx;
 									width: 100%;
 									overflow: hidden;
 									text-overflow: ellipsis;
@@ -981,9 +1033,9 @@ const toPay = () => {
 									overflow: hidden;
 									text-overflow: ellipsis;
 									white-space: nowrap;
-									font-size: $font-size-sm;
-									color: $text-color-assist;
-									margin-bottom: 10rpx;
+									font-size: 22rpx;
+									color: #9E9E9E;
+									margin-bottom: 8rpx;
 								}
 	
 								.price_and_action {
@@ -993,8 +1045,9 @@ const toPay = () => {
 									align-items: center;
 	
 									.price {
-										font-size: $font-size-base;
-										font-weight: 600;
+										font-size: 32rpx;
+										font-weight: bold;
+										color: #D4AF37;
 									}
 	
 									.btn-group {
@@ -1004,33 +1057,30 @@ const toPay = () => {
 										position: relative;
 	
 										.btn {
-											padding: 0 20rpx;
+											padding: 0 24rpx;
 											box-sizing: border-box;
-											font-size: $font-size-sm;
-											height: 44rpx;
-											line-height: 44rpx;
+											font-size: 22rpx;
+											height: 46rpx;
+											line-height: 46rpx;
+											font-weight: bold;
 	
 											&.property_btn {
 												border-radius: 24rpx;
-											}
-	
-											&.add_btn,
-											&.reduce_btn {
-												padding: 0;
-												width: 44rpx;
-												border-radius: 44rpx;
+												background: linear-gradient(135deg, #E6C655 0%, #D4AF37 100%);
+												color: #121212;
+												border: none;
 											}
 										}
 	
 										.dot {
 											position: absolute;
-											background-color: #ffffff;
-											border: 1px solid $color-primary;
-											color: $color-primary;
-											font-size: $font-size-sm;
-											width: 36rpx;
-											height: 36rpx;
-											line-height: 36rpx;
+											background-color: #D4AF37;
+											color: #121212;
+											font-weight: bold;
+											font-size: 20rpx;
+											width: 32rpx;
+											height: 32rpx;
+											line-height: 32rpx;
 											text-align: center;
 											border-radius: 100%;
 											right: -12rpx;
@@ -1042,6 +1092,7 @@ const toPay = () => {
 											height: 44rpx;
 											line-height: 44rpx;
 											text-align: center;
+											color: #FFFFFF;
 										}
 									}
 								}
@@ -1055,10 +1106,8 @@ const toPay = () => {
 	
 	
 	.good-detail-modal {
-		width: 100%;
-		height: 100%;
-		display: flex;
-		flex-direction: column;
+		background-color: #1E1E1E;
+		color: #FFFFFF;
 	
 		.cover {
 			height: 20rpx;
@@ -1068,16 +1117,17 @@ const toPay = () => {
 	
 			.btn-group {
 				position: absolute;
-				right: 10rpx;
-				top: 0rpx;
+				right: 15rpx;
+				top: 15rpx;
 				display: flex;
 				align-items: center;
 				justify-content: space-around;
 				z-index: 210;
 				 
 				image {
-					width: 80rpx;
-					height: 80rpx;
+					width: 50rpx;
+					height: 50rpx;
+					opacity: 0.7;
 				}
 			}
 		}
@@ -1087,11 +1137,14 @@ const toPay = () => {
 			min-height: 1vh;
 			max-height: calc(90vh - 320rpx - 80rpx - 120rpx);
 			position: relative;
+			background-color: #1E1E1E;
 	
 			.image {
 				display: flex;
 				justify-content: center;
 				align-items: center;
+				padding: 30rpx 0;
+				background-color: #121212;
 				image {
 					width: 260rpx;
 					height: 260rpx;
@@ -1101,26 +1154,28 @@ const toPay = () => {
 				width: 100%;
 				height: 100%;
 				overflow: hidden;
+				padding-top: 20rpx;
 	
 				.basic {
-					padding: 0 20rpx 30rpx;
+					padding: 20rpx 30rpx;
 					display: flex;
 					flex-direction: column;
 					.name {
-						font-size: $font-size-base;
-						color: $text-color-base;
-						margin-bottom: 10rpx;
+						font-size: 32rpx;
+						font-weight: bold;
+						color: #FFFFFF;
+						margin-bottom: 8rpx;
 					}
 					.tips {
-						font-size: $font-size-sm;
-						color: $text-color-grey;
+						font-size: 24rpx;
+						color: #9E9E9E;
 					}
 				}
 	
 				.properties {
 					width: 100%;
-					border-top: 2rpx solid $bg-color-grey;
-					padding: 10rpx 30rpx 0;
+					border-top: 1rpx solid rgba(255, 255, 255, 0.05);
+					padding: 20rpx 30rpx 0;
 					display: flex;
 					flex-direction: column;
 	
@@ -1129,25 +1184,25 @@ const toPay = () => {
 						display: flex;
 						flex-direction: column;
 						margin-bottom: 30rpx;
-						padding-bottom: -16rpx;
 	
 						.title {
 							width: 100%;
 							display: flex;
 							justify-content: flex-start;
 							align-items: center;
-							margin-bottom: 20rpx;
+							margin-bottom: 16rpx;
 	
 							.name {
 								font-size: 26rpx;
-								color: $text-color-base;
+								color: #FFFFFF;
+								font-weight: bold;
 								margin-right: 20rpx;
 							}
 	
 							.desc {
 								flex: 1;
-								font-size: $font-size-sm;
-								color: $color-primary;
+								font-size: 22rpx;
+								color: #D4AF37;
 								overflow: hidden;
 								text-overflow: ellipsis;
 								white-space: nowrap;
@@ -1161,16 +1216,20 @@ const toPay = () => {
 	
 							.value {
 								border-radius: 8rpx;
-								background-color: $bg-color-grey;
-								padding: 16rpx 30rpx;
-								font-size: 26rpx;
-								color: $text-color-assist;
+								background-color: #2A2A2A;
+								padding: 12rpx 28rpx;
+								font-size: 24rpx;
+								color: #9E9E9E;
 								margin-right: 16rpx;
 								margin-bottom: 16rpx;
+								border: 1rpx solid transparent;
+								transition: all 0.2s ease;
 	
 								&.default {
-									background-color: $color-primary;
-									color: $text-color-white;
+									background-color: rgba(212, 175, 55, 0.1);
+									color: #D4AF37;
+									border: 1rpx solid #D4AF37;
+									font-weight: bold;
 								}
 							}
 						}
@@ -1183,9 +1242,10 @@ const toPay = () => {
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
-			background-color: $bg-color-grey;
+			background-color: #121212;
 			height: 120rpx;
-			padding: 0 26rpx;
+			padding: 0 30rpx;
+			border-top: 1rpx solid rgba(255, 255, 255, 0.05);
 	
 			.left {
 				flex: 1;
@@ -1196,13 +1256,14 @@ const toPay = () => {
 				overflow: hidden;
 	
 				.price {
-					font-size: $font-size-lg;
-					color: $text-color-base;
+					font-size: 36rpx;
+					font-weight: bold;
+					color: #D4AF37;
 				}
 	
 				.props {
-					color: $text-color-assist;
-					font-size: 24rpx;
+					color: #9E9E9E;
+					font-size: 22rpx;
 					width: 100%;
 					overflow: hidden;
 					text-overflow: ellipsis;
@@ -1213,6 +1274,7 @@ const toPay = () => {
 				display: flex;
 				align-items: center;
 				justify-content: space-around;
+				color: #FFFFFF;
 	
 				.number {
 					font-size: $font-size-base;
@@ -1229,6 +1291,12 @@ const toPay = () => {
 					height: 44rpx;
 					line-height: 44rpx;
 					border-radius: 100%;
+					background-color: #D4AF37;
+					color: #121212;
+					border: none;
+					display: flex;
+					align-items: center;
+					justify-content: center;
 				}
 			}
 		}
@@ -1237,11 +1305,12 @@ const toPay = () => {
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			background-color: $color-primary;
-			color: $text-color-white;
-			font-size: $font-size-base;
-			height: 80rpx;
-			border-radius: 0 0 12rpx 12rpx;
+			background: linear-gradient(135deg, #E6C655 0%, #D4AF37 100%);
+			color: #121212;
+			font-weight: bold;
+			font-size: 30rpx;
+			height: 88rpx;
+			border-radius: 0 0 16rpx 16rpx;
 		}
 	}
 	
@@ -1249,35 +1318,43 @@ const toPay = () => {
 		position: fixed;
 		bottom: 30rpx;
 		/* #ifdef H5 */
-		bottom:var(--window-bottom);
-		//bottom: 100rpx;
+		bottom: calc(var(--window-bottom) + 20rpx);
 		/* #endif */
 		left: 30rpx;
 		right: 30rpx;
 		height: 96rpx;
 		border-radius: 48rpx;
-		box-shadow: 0 0 20rpx rgba(0, 0, 0, 0.2);
-		background-color: #ffffff;
+		box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.4);
+		background-color: rgba(30, 30, 30, 0.95);
+		border: 1rpx solid rgba(212, 175, 55, 0.4);
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		z-index: 9999;
+		backdrop-filter: blur(10px);
 	
 		.cart-img {
 			width: 96rpx;
 			height: 96rpx;
 			position: relative;
-			margin-top: -48rpx;
+			margin-top: -30rpx;
+			transition: transform 0.2s ease;
+			&:active {
+				transform: scale(0.9);
+			}
 		}
 	
 		.pay-btn {
 			height: 100%;
-			padding: 0 30rpx;
-			color: #ffffff;
-			border-radius: 0 50rpx 50rpx 0;
+			padding: 0 40rpx;
+			background: linear-gradient(135deg, #E6C655 0%, #D4AF37 100%) !important;
+			color: #121212 !important;
+			border-radius: 0 48rpx 48rpx 0;
 			display: flex;
 			align-items: center;
-			font-size: $font-size-base;
+			font-size: 30rpx;
+			font-weight: bold;
+			border: none;
 		}
 	
 		.mark {
@@ -1286,41 +1363,48 @@ const toPay = () => {
 			position: relative;
 	
 			.tag {
-				//background-color: $color-warning;
-				background-color: #09b4f1;;
-				color: $text-color-white;
+				background-color: #D4AF37;
+				color: #121212;
+				font-weight: bold;
 				display: flex;
 				justify-content: center;
 				align-items: center;
-				font-size: $font-size-sm;
+				font-size: 20rpx;
 				position: absolute;
 				right: -10rpx;
 				top: -50rpx;
 				border-radius: 100%;
 				padding: 4rpx;
-				width: 40rpx;
-				height: 40rpx;
-				opacity: 0.9;
+				width: 36rpx;
+				height: 36rpx;
+				border: 2rpx solid #121212;
 			}
 		}
 	
 		.price {
 			flex: 1;
-			color: $text-color-base;
+			color: #D4AF37;
+			font-size: 36rpx;
+			font-weight: bold;
+			padding-left: 20rpx;
 		}
 	}
 	
 	.cart-popup {
+		background-color: #1E1E1E;
+		border-radius: 24rpx 24rpx 0 0;
+		color: #FFFFFF;
+		
 		.top {
-			background-color: $bg-color-primary;
-			//color: $color-primary;
-			color: #5A5B5C;
-			padding: 10rpx 30rpx;
+			background-color: #121212;
+			color: #9E9E9E;
+			padding: 16rpx 30rpx;
 			font-size: 24rpx;
 			text-align: right;
+			border-bottom: 1rpx solid rgba(255, 255, 255, 0.05);
 		}
 		.cart-list {
-			background-color: #ffffff;
+			background-color: #1E1E1E;
 			width: 100%;
 			overflow: hidden;
 			min-height: 1vh;
@@ -1339,17 +1423,7 @@ const toPay = () => {
 					align-items: center;
 					padding: 30rpx 0;
 					position: relative;
-	
-					&::after {
-						content: ' ';
-						position: absolute;
-						bottom: 0;
-						left: 0;
-						width: 100%;
-						background-color: $border-color;
-						height: 2rpx;
-						transform: scaleY(0.6);
-					}
+					border-bottom: 1rpx solid rgba(255, 255, 255, 0.05);
 	
 					.left {
 						flex: 1;
@@ -1359,21 +1433,25 @@ const toPay = () => {
 						margin-right: 30rpx;
 	
 						.name {
-							font-size: $font-size-sm;
-							color: $text-color-base;
+							font-size: 28rpx;
+							font-weight: bold;
+							color: #FFFFFF;
 						}
 						.props {
-							color: $text-color-assist;
-							font-size: 24rpx;
+							color: #9E9E9E;
+							font-size: 22rpx;
 							overflow: hidden;
 							text-overflow: ellipsis;
 							white-space: nowrap;
+							margin-top: 4rpx;
 						}
 					}
 	
 					.center {
 						margin-right: 120rpx;
-						font-size: $font-size-base;
+						font-size: 28rpx;
+						color: #D4AF37;
+						font-weight: bold;
 					}
 	
 					.right {
@@ -1388,14 +1466,21 @@ const toPay = () => {
 							padding: 0;
 							text-align: center;
 							line-height: 46rpx;
+							background-color: #D4AF37;
+							color: #121212;
+							border: none;
+							display: flex;
+							align-items: center;
+							justify-content: center;
 						}
 	
 						.number {
-							font-size: $font-size-base;
+							font-size: 28rpx;
 							width: 46rpx;
 							height: 46rpx;
 							text-align: center;
 							line-height: 46rpx;
+							color: #FFFFFF;
 						}
 					}
 				}
@@ -1404,7 +1489,8 @@ const toPay = () => {
 	}
 	
 	.backgroud-grey {
-		background-color: #e1e4e4;
+		background-color: rgba(255, 255, 255, 0.05);
+		opacity: 0.5;
 		padding: 15rpx !important;
 	}
 </style>

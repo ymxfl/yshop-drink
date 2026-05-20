@@ -10,7 +10,7 @@
 .view,.text{
 	font-size:28rpx; 
 	line-height:1.8; 
-	color:#0E151D;
+	color:inherit;
 }
 /* 宽度 */
 /* #ifndef APP-PLUS-NVUE */
