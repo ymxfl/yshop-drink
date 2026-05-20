@@ -111,7 +111,12 @@
 				<!-- 购物车栏 begin -->
 				<view class="cart-box" v-if="cart.length > 0 && isCartShow">
 					<view class="mark">
-						<image src="/static/images/menu/cart_gold.png" class="cart-img" @tap="openCartPopup"></image>
+						<svg class="cart-img" @tap="openCartPopup" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+							<circle cx="32" cy="32" r="28" fill="#D4AF37" />
+							<path d="M20 24h6l4 18h16l4-14H28" stroke="#121212" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+							<circle cx="32" cy="46" r="3" fill="#121212" />
+							<circle cx="44" cy="46" r="3" fill="#121212" />
+						</svg>
 						<view class="tag">{{ getCartGoodsNumber }}</view>
 					</view>
 					<view class="price" @tap="openCartShow">￥{{ getCartGoodsPrice }}</view>
@@ -125,8 +130,11 @@
 			<modal :show="goodDetailModalVisible" class="good-detail-modal" color="#5A5B5C" width="90%" custom
 				padding="0rpx" radius="12rpx">
 				<view class="cover">
-					<view class="btn-group">
-						<image src="/static/images/menu/close.png" @tap="closeGoodDetailModal"></image>
+					<view class="btn-group" @tap="closeGoodDetailModal">
+						<svg style="width: 44rpx; height: 44rpx; opacity: 0.8;" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+							<line x1="18" y1="6" x2="6" y2="18"></line>
+							<line x1="6" y1="6" x2="18" y2="18"></line>
+						</svg>
 					</view>
 				</view>
 				<scroll-view class="detail" scroll-y>
