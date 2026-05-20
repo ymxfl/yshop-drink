@@ -64,37 +64,9 @@ page {
 	padding: 32rpx;
 	border: 1rpx solid rgba(212, 175, 55, 0.1);
 	box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.3);
-
-	/* 强制覆盖 rich-text 内的白色背景与默认文字色，适配暗色主题 */
-	:deep(p),
-	:deep(div),
-	:deep(span),
-	:deep(li),
-	:deep(h1),
-	:deep(h2),
-	:deep(h3),
-	:deep(h4) {
-		color: #CCCCCC !important;
-		background-color: transparent !important;
-		line-height: 1.8;
-	}
-
-	:deep(h1),
-	:deep(h2),
-	:deep(h3) {
-		color: #F5D061 !important;
-		font-weight: bold;
-		margin: 16rpx 0 10rpx;
-	}
-
-	:deep(a) {
-		color: #D4AF37 !important;
-	}
-
-	:deep(img) {
-		max-width: 100%;
-		border-radius: 8rpx;
-	}
+	color: #CCCCCC;
+	font-size: 28rpx;
+	line-height: 1.9;
 }
 
 .loading-wrap {
