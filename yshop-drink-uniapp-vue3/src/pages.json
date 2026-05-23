@@ -65,29 +65,35 @@
 				"path": "pages/mine/content",
 				"style": {
 					"navigationBarTitleText": "内容",
-					"navigationBarTextStyle": "black",
-					"navigationBarBackgroundColor": "#ffffff"
+					"navigationBarTextStyle": "white",
+					"navigationBarBackgroundColor": "#121212",
+					"backgroundColor": "#121212",
+					"disableScroll": true
 				}
 			}, {
 				"path": "pages/pay/pay",
 				"style": {
 					"navigationBarTitleText": "支付",
-					"navigationBarTextStyle": "black",
-					"navigationBarBackgroundColor": "#ffffff"
+					"navigationBarTextStyle": "white",
+					"navigationBarBackgroundColor": "#121212",
+					"backgroundColor": "#121212",
+					"disableScroll": true
 				}
 			}, {
 				"path": "pages/remark/remark",
 				"style": {
 					"navigationBarTitleText": "备注",
-					"navigationBarTextStyle": "black",
-					"navigationBarBackgroundColor": "#ffffff"
+					"navigationBarTextStyle": "white",
+					"navigationBarBackgroundColor": "#121212",
+					"backgroundColor": "#121212"
 				}
 			}, {
 				"path": "pages/packages/index",
 				"style": {
 					"navigationBarTitleText": "可用优惠券",
-					"navigationBarTextStyle": "black",
-					"navigationBarBackgroundColor": "#ffffff",
+					"navigationBarTextStyle": "white",
+					"navigationBarBackgroundColor": "#121212",
+					"backgroundColor": "#121212",
 					"enablePullDownRefresh": true
 				}
 			 },
@@ -95,36 +101,43 @@
 				"path": "pages/login/login",
 				"style": {
 					"navigationBarTitleText": "登录",
-					"navigationBarTextStyle": "black",
-					"navigationBarBackgroundColor": "#ffffff"
+					"navigationBarTextStyle": "white",
+					"navigationBarBackgroundColor": "#121212",
+					"backgroundColor": "#121212"
 				}
 			},
 			{
 				"path": "pages/login/logout",
 				"style": {
-					"navigationBarTitleText": "退出登录"
+					"navigationBarTitleText": "退出登录",
+					"navigationBarTextStyle": "white",
+					"navigationBarBackgroundColor": "#121212",
+					"backgroundColor": "#121212"
 				}
 			},
 			{
 				"path": "pages/address/address",
 				"style": {
 					"navigationBarTitleText": "我的地址",
-					"navigationBarTextStyle": "black",
-					"navigationBarBackgroundColor": "#ffffff"
+					"navigationBarTextStyle": "white",
+					"navigationBarBackgroundColor": "#121212",
+					"backgroundColor": "#121212"
 				}
 			}, {
 				"path": "pages/address/add",
 				"style": {
 					"navigationBarTitleText": "添加地址",
-					"navigationBarTextStyle": "black",
-					"navigationBarBackgroundColor": "#ffffff"
+					"navigationBarTextStyle": "white",
+					"navigationBarBackgroundColor": "#121212",
+					"backgroundColor": "#121212"
 				}
 			}, {
 				"path": "pages/orders/orders",
 				"style": {
 					"navigationBarTitleText": "历史订单",
-					"navigationBarTextStyle": "black",
-					"navigationBarBackgroundColor": "#ffffff",
+					"navigationBarTextStyle": "white",
+					"navigationBarBackgroundColor": "#121212",
+					"backgroundColor": "#121212",
 					"enablePullDownRefresh": true,
 					"onReachBottomDistance": 50
 				}
@@ -132,8 +145,9 @@
 				"path": "pages/orders/detail",
 				"style": {
 					"navigationBarTitleText": "订单详情",
-					"navigationBarTextStyle": "black",
-					"navigationBarBackgroundColor": "#ffffff"
+					"navigationBarTextStyle": "white",
+					"navigationBarBackgroundColor": "#121212",
+					"backgroundColor": "#121212"
 				}
 			}, {
 				"path": "pages/coupons/coupons",
@@ -150,23 +164,26 @@
 				"path": "pages/mine/userinfo",
 				"style": {
 					"navigationBarTitleText": "用户信息",
-					"navigationBarTextStyle": "black",
-					"navigationBarBackgroundColor": "#ffffff"
+					"navigationBarTextStyle": "white",
+					"navigationBarBackgroundColor": "#121212",
+					"backgroundColor": "#121212"
 				}
 			},
 			 {
 				"path": "pages/shop/shop",
 				"style": {
 					"navigationBarTitleText": "店铺",
-					"navigationBarTextStyle": "black",
-					"navigationBarBackgroundColor": "#ffffff"
+					"navigationBarTextStyle": "white",
+					"navigationBarBackgroundColor": "#121212",
+					"backgroundColor": "#121212"
 				}
 			}, {
 				"path": "pages/balance/bill",
 				"style": {
 					"navigationBarTitleText": "账单",
-					"navigationBarTextStyle": "black",
-					"navigationBarBackgroundColor": "#ffffff"
+					"navigationBarTextStyle": "white",
+					"navigationBarBackgroundColor": "#121212",
+					"backgroundColor": "#121212"
 				}
 			}
 		    ,{
@@ -174,6 +191,9 @@
                     "style" :                                                                                    
 					{
 						"navigationBarTitleText": "退款",
+						"navigationBarTextStyle": "white",
+						"navigationBarBackgroundColor": "#121212",
+						"backgroundColor": "#121212",
 						"enablePullDownRefresh": false
 					}
                 
@@ -182,6 +202,9 @@
 				"path": "pages/scoreproduct/list",
 				"style": {
 					"navigationBarTitleText": "积分商城",
+					"navigationBarTextStyle": "white",
+					"navigationBarBackgroundColor": "#121212",
+					"backgroundColor": "#121212",
 					"enablePullDownRefresh": true
 				}
 			
@@ -189,6 +212,9 @@
 				"path": "pages/scoreproduct/detail",
 				"style": {
 					"navigationBarTitleText": "产品详情",
+					"navigationBarTextStyle": "white",
+					"navigationBarBackgroundColor": "#121212",
+					"backgroundColor": "#121212",
 					"enablePullDownRefresh": true
 				}
 			
@@ -196,12 +222,18 @@
 				"path": "pages/scoreproduct/order",
 				"style": {
 					"navigationBarTitleText": "订单列表",
+					"navigationBarTextStyle": "white",
+					"navigationBarBackgroundColor": "#121212",
+					"backgroundColor": "#121212",
 					"enablePullDownRefresh": true
 				}
 			}, {
 				"path": "pages/scoreproduct/orderDetail",
 				"style": {
 					"navigationBarTitleText": "订单详情",
+					"navigationBarTextStyle": "white",
+					"navigationBarBackgroundColor": "#121212",
+					"backgroundColor": "#121212",
 					"enablePullDownRefresh": true
 				}
 			}
@@ -210,6 +242,9 @@
 			        "style" :                                                                                    
 			    {
 			        "navigationBarTitleText": "确认",
+					"navigationBarTextStyle": "white",
+					"navigationBarBackgroundColor": "#121212",
+					"backgroundColor": "#121212",
 			        "enablePullDownRefresh": false
 			    }
 			    
@@ -217,10 +252,10 @@
             ]
 	}],
   "globalStyle": {
-    "navigationBarTextStyle": "black",
+    "navigationBarTextStyle": "white",
     "navigationBarTitleText": " ",
-    "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "#F8F8F8",
+    "navigationBarBackgroundColor": "#121212",
+    "backgroundColor": "#121212",
     "navigationStyle": "custom"
   },
   "tabBar": {

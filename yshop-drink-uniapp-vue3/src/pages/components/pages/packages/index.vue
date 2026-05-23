@@ -4,6 +4,9 @@
 	  :title="title"
 	  left-arrow
 	  @leftClick="$onClickLeft"
+	  bg-color="#121212"
+	  :title-style="{ color: '#FFFFFF', fontWeight: 'bold' }"
+	  left-icon-color="#D4AF37"
 	/>
 	<view class="container position-relative w-100 h-100 overflow-hidden">
 		<uv-empty v-if="coupons.length == 0" mode="coupon"></uv-empty>
@@ -175,6 +178,12 @@ const useCoupon = () => {
 
 </script>
 
+<style lang="scss">
+page {
+	background-color: #121212 !important;
+}
+</style>
+
 <style lang="scss" scoped>
 /* #ifdef H5 */
 page {
@@ -185,6 +194,8 @@ page {
 .container {
 	display: flex;
 	flex-direction: column;
+	background-color: #121212;
+	min-height: 100vh;
 }
 
 
@@ -205,7 +216,7 @@ page {
 	.coupon {
 		display: flex;
 		flex-direction: column;
-		background-color: #ffffff;
+		background-color: #1E1E1E;
 		margin-bottom: 30rpx;
 		//padding: 0 30rpx;
 		border-radius: 6rpx;

@@ -118,13 +118,10 @@
 				<!-- content end -->
 				<!-- 购物车栏 begin -->
 				<view class="cart-box" v-if="cart.length > 0 && isCartShow">
-					<view class="mark">
-						<svg class="cart-img" @tap="openCartPopup" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-							<circle cx="32" cy="32" r="28" fill="#D4AF37" />
-							<path d="M20 24h6l4 18h16l4-14H28" stroke="#121212" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
-							<circle cx="32" cy="46" r="3" fill="#121212" />
-							<circle cx="44" cy="46" r="3" fill="#121212" />
-						</svg>
+					<view class="cart-icon-wrap" @tap="openCartPopup">
+						<view class="cart-icon-circle">
+							<text class="iconfont iconshangcheng cart-icon-glyph"></text>
+						</view>
 						<view class="tag">{{ getCartGoodsNumber }}</view>
 					</view>
 					<view class="price" @tap="openCartShow">￥{{ getCartGoodsPrice }}</view>
@@ -137,13 +134,9 @@
 			<!-- 商品详情模态框 begin -->
 			<modal :show="goodDetailModalVisible" class="good-detail-modal" color="#5A5B5C" width="90%" custom
 				padding="0rpx" radius="12rpx">
-				<view class="cover">
-					<view class="btn-group" @tap="closeGoodDetailModal">
-						<svg style="width: 44rpx; height: 44rpx; opacity: 0.8;" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-							<line x1="18" y1="6" x2="6" y2="18"></line>
-							<line x1="6" y1="6" x2="18" y2="18"></line>
-						</svg>
-					</view>
+				<view class="good-detail-body">
+				<view class="modal-close-btn" @tap.stop="closeGoodDetailModal">
+					<text class="iconfont iconclose"></text>
 				</view>
 				<scroll-view class="detail" scroll-y>
 					<view v-if="good.image" class="image">
@@ -155,7 +148,7 @@
 							<view class="name">{{ good.storeName }}</view>
 							<view class="tips flex justify-between">{{ good.storeInfo }} <text style="color: red;">可获积分:10</text></view>
 						</view>
-						<view class="properties">
+						<view class="properties" v-if="good.productAttr && good.productAttr.length">
 							<view class="property" v-for="(item, index) in good.productAttr" :key="index">
 								<view class="title">
 									<text class="name">{{ item.attrName }}</text>
@@ -192,6 +185,7 @@
 				</view>
 				<view class="add-to-cart-btn" @tap="handleAddToCartInModal">
 					<view>加入购物车</view>
+				</view>
 				</view>
 			</modal>
 			<!-- 商品详情模态框 end -->
@@ -588,28 +582,35 @@ const handleReduceFromCart = (item, good) => {
 	}
 	uni.setStorageSync('cart', JSON.parse(JSON.stringify(cart.value)))
 }
+/** 规格来自接口 productAttr，兼容仅有 attrValues 字符串的情况 */
+const normalizeProductAttr = (attrs) => {
+	if (!attrs || !attrs.length) {
+		return []
+	}
+	return attrs.map((attr) => ({
+		...attr,
+		attrValueArr: (attr.attrValueArr && attr.attrValueArr.length)
+			? attr.attrValueArr
+			: (attr.attrValues ? String(attr.attrValues).split(',').map((s) => s.trim()).filter(Boolean) : [])
+	})).filter((attr) => attr.attrValueArr && attr.attrValueArr.length)
+}
+
 const showGoodDetailModal = (item, newGood) => {
 	isCartShow.value = true
 	good.value = JSON.parse(JSON.stringify({
 		...newGood,
 		number: 1
 	}))
-	
-	if (!good.value.productAttr) {
-		good.value.productAttr = [];
-	}
-	const hasTemp = good.value.productAttr.some(attr => attr.attrName === '饮用温度');
-	if (!hasTemp) {
-		good.value.productAttr.push({
-			attrName: '饮用温度',
-			attrValueArr: ['冰镇 4°C', '常温 15°C', '暖啤 35°C']
-		});
-	}
-	
+	good.value.productAttr = normalizeProductAttr(good.value.productAttr)
+
 	category.value = JSON.parse(JSON.stringify(item))
-	goodDetailModalVisible.value = true;
-	console.log('goodDetailModalVisible:',goodDetailModalVisible.value)
-	changePropertyDefault(0, 0,true);
+	goodDetailModalVisible.value = true
+	if (good.value.productAttr.length > 0) {
+		changePropertyDefault(0, 0, true)
+	} else {
+		newValue.value = []
+		good.value.valueStr = ''
+	}
 }
 const closeGoodDetailModal = () => { //关闭饮品详情模态框
 	goodDetailModalVisible.value = false
@@ -629,14 +630,9 @@ const changePropertyDefault = (index, key, isDefault) => { //改变默认属性�
 	}
 	
 	valueStr = newValue.value.join(',')
-	
-	let skuValues = [];
-	for (let i = 0; i < good.value.productAttr.length; i++) {
-		if (good.value.productAttr[i].attrName !== '饮用温度') {
-			skuValues.push(newValue.value[i]);
-		}
-	}
-	let skuStr = skuValues.join(',');
+
+	const skuValues = [...newValue.value]
+	let skuStr = skuValues.join(',')
 	
 	let productValue = good.value.productValue[skuStr]
 	if(!productValue) {
@@ -1146,30 +1142,43 @@ const toPay = () => {
 	.good-detail-modal {
 		background-color: #1E1E1E;
 		color: #FFFFFF;
-	
-		.cover {
-			height: 20rpx;
+	}
+
+	.good-detail-body {
+		position: relative;
+		width: 100%;
+		background-color: #1E1E1E;
+		border-radius: 12rpx;
+		overflow: hidden;
+
+		.modal-close-btn {
+			position: absolute;
+			top: 16rpx;
+			right: 16rpx;
+			z-index: 300;
+			width: 64rpx;
+			height: 64rpx;
+			border-radius: 50%;
+			background: rgba(30, 30, 30, 0.95);
+			border: 2rpx solid #D4AF37;
+			box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.5);
 			display: flex;
-			justify-content: center;
 			align-items: center;
-	
-			.btn-group {
-				position: absolute;
-				right: 15rpx;
-				top: 15rpx;
-				display: flex;
-				align-items: center;
-				justify-content: space-around;
-				z-index: 210;
-				 
-				image {
-					width: 50rpx;
-					height: 50rpx;
-					opacity: 0.7;
-				}
+			justify-content: center;
+
+			.iconfont {
+				font-size: 36rpx;
+				color: #D4AF37;
+				line-height: 1;
+				font-weight: bold;
+			}
+
+			&:active {
+				opacity: 0.85;
+				transform: scale(0.95);
 			}
 		}
-	
+
 		.detail {
 			width: 100%;
 			min-height: 1vh;
@@ -1371,15 +1380,40 @@ const toPay = () => {
 		z-index: 9999;
 		backdrop-filter: blur(10px);
 	
-		.cart-img {
-			width: 96rpx;
-			height: 96rpx;
+		.cart-icon-wrap {
 			position: relative;
-			margin-top: -30rpx;
+			flex-shrink: 0;
+			width: 100rpx;
+			height: 96rpx;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-left: 8rpx;
+			margin-right: 8rpx;
 			transition: transform 0.2s ease;
+
 			&:active {
-				transform: scale(0.9);
+				transform: scale(0.92);
 			}
+		}
+
+		.cart-icon-circle {
+			width: 88rpx;
+			height: 88rpx;
+			border-radius: 50%;
+			background: #1E1E1E;
+			border: 3rpx solid #D4AF37;
+			box-shadow: 0 6rpx 20rpx rgba(212, 175, 55, 0.45);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transform: translateY(-8rpx);
+		}
+
+		.cart-icon-glyph {
+			font-size: 44rpx;
+			line-height: 1;
+			color: #D4AF37;
 		}
 	
 		.pay-btn {
@@ -1395,28 +1429,24 @@ const toPay = () => {
 			border: none;
 		}
 	
-		.mark {
-			padding-left: 46rpx;
-			margin-right: 30rpx;
-			position: relative;
-	
-			.tag {
-				background-color: #D4AF37;
-				color: #121212;
-				font-weight: bold;
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				font-size: 20rpx;
-				position: absolute;
-				right: -10rpx;
-				top: -50rpx;
-				border-radius: 100%;
-				padding: 4rpx;
-				width: 36rpx;
-				height: 36rpx;
-				border: 2rpx solid #121212;
-			}
+		.cart-icon-wrap .tag {
+			background-color: #D4AF37;
+			color: #121212;
+			font-weight: bold;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 20rpx;
+			position: absolute;
+			right: 0;
+			top: 4rpx;
+			border-radius: 100%;
+			min-width: 36rpx;
+			height: 36rpx;
+			padding: 0 6rpx;
+			border: 2rpx solid #121212;
+			box-sizing: border-box;
+			z-index: 1;
 		}
 	
 		.price {
@@ -1424,7 +1454,9 @@ const toPay = () => {
 			color: #D4AF37;
 			font-size: 36rpx;
 			font-weight: bold;
-			padding-left: 20rpx;
+			padding-left: 8rpx;
+			display: flex;
+			align-items: center;
 		}
 	}
 	

@@ -1,9 +1,13 @@
 <template>
 	<uv-navbar
-	  :fixed="false"
+	  :fixed="true"
+	  :placeholder="true"
 	  :title="title"
 	  left-arrow
 	  @leftClick="$onClickLeft"
+	  bg-color="#121212"
+	  :title-style="{ color: '#FFFFFF', fontWeight: 'bold' }"
+	  left-icon-color="#D4AF37"
 	/>
 	<view class="p-2">
 		<uv-list>
@@ -55,5 +59,15 @@ const refund  = async() => {
 
 </script>
 
-<style>
+<style lang="scss">
+page {
+	background-color: #121212 !important;
+}
+</style>
+
+<style lang="scss" scoped>
+.p-2 {
+	background-color: #121212;
+	min-height: 100vh;
+}
 </style>

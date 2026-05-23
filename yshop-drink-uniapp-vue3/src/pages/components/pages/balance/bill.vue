@@ -4,13 +4,16 @@
 	  :title="title"
 	  left-arrow
 	  @leftClick="$onClickLeft"
+	  bg-color="#121212"
+	  :title-style="{ color: '#FFFFFF', fontWeight: 'bold' }"
+	  left-icon-color="#D4AF37"
 	/>
 	<view>
 		<view class="wrap">
-			<view class="bg-white" v-if="cate == 0">
+			<view class="tabs-wrap" v-if="cate == 0">
 				<uv-tabs activeColor="#f29100" ref="tabs" :list="list" :current="current" @change="change" :scrollable="false" swiperWidth="750"></uv-tabs>
 			</view>
-			<view class="bg-white" v-else>
+			<view class="tabs-wrap" v-else>
 				<uv-tabs activeColor="#f29100" ref="tabs" :list="list1" :current="current" @change="change" :scrollable="false" swiperWidth="750"></uv-tabs>
 			</view>
 			<swiper class="swiper-box" :current="swiperCurrent" @transition="transition" @animationfinish="animationfinish">
@@ -158,7 +161,7 @@ const animationfinish = ({ detail }) => {
 /* #ifndef H5 */
 page {
 	height: 100%;
-	background-color: #f2f2f2;
+	background-color: #121212 !important;
 }
 /* #endif */
 </style>
@@ -166,7 +169,7 @@ page {
 <style lang="scss" scoped>
 .order {
 	width: 710rpx;
-	background-color: #ffffff;
+	background-color: #1E1E1E;
 	margin: 20rpx auto;
 	border-radius: 20rpx;
 	box-sizing: border-box;
@@ -213,11 +216,15 @@ page {
 		background: linear-gradient(270deg, rgba(249, 116, 90, 1) 0%, rgba(255, 158, 1, 1) 100%);
 	}
 }
+.tabs-wrap {
+	background-color: #1E1E1E;
+}
 .wrap {
 	display: flex;
 	flex-direction: column;
 	height: calc(100vh - var(--window-top));
 	width: 100%;
+	background-color: #121212;
 }
 .swiper-box {
 	flex: 1;

@@ -1,13 +1,17 @@
 <template>
 	<uv-navbar
-	  :fixed="false"
+	  :fixed="true"
+	  :placeholder="true"
 	  :title="title"
 	  left-arrow
 	  @leftClick="$onClickLeft"
+	  bg-color="#121212"
+	  :title-style="{ color: '#FFFFFF', fontWeight: 'bold' }"
+	  left-icon-color="#D4AF37"
 	/>
 	<view class="container" style="padding:20rpx;">
 		<view style="padding-bottom: 100rpx;">
-			<view class="bg-white">
+			<view class="detail-card">
 				<view class="section">
 					<!-- store info begin -->
 					<list-cell :hover="false">
@@ -182,7 +186,7 @@
 				</list-cell>
 				<!-- order other info end -->
 			</view>
-			<view class="fixed-bottom flex justify-end bg-white p-2" v-if="order.paid > 0 && order.refundStatus == 0">
+			<view class="fixed-bottom flex justify-end detail-bottom p-2" v-if="order.paid > 0 && order.refundStatus == 0">
 				<view class="mr-1"><uv-button type="success" v-if="order.status < 2" :plain="true" size="small" text="确认收到餐" @click="receive(order)"></uv-button></view>
 				<view><uv-button type="warning" :plain="true" size="small" text="申请退款" @click="refund(order)"></uv-button></view>
 			</view>
@@ -409,4 +413,24 @@ const refund = (order) => {
 	.iconfont-yshop {
 		color: #09b4f1;
 	}
+</style>
+
+<style lang="scss">
+page {
+	background-color: #121212 !important;
+}
+</style>
+
+<style lang="scss" scoped>
+.container {
+	background-color: #121212;
+	min-height: 100vh;
+}
+.detail-card {
+	background-color: #1E1E1E;
+	border-radius: 16rpx;
+}
+.detail-bottom {
+	background-color: #1E1E1E;
+}
 </style>

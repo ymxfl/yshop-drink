@@ -203,7 +203,7 @@ yshop:
   access-log: # 访问日志的配置项
     enable: false
   demo: false # 关闭演示模式
-  tencent-lbs-key: TVDBZ-TDILD-4ON4B-PFDZA-RNLKH-VVF6E # QQ 地图的密钥 https://lbs.qq.com/service/staticV2/staticGuide/staticDoc
+  tencent-lbs-key: F7XBZ-6NM6U-VW2V6-GHH4K-IMAJQ-SSBYG # QQ 地图的密钥 https://lbs.qq.com/service/staticV2/staticGuide/staticDoc
   file-path: /Users/joshua/yshop/file/
   h5: http://localhost:80
 

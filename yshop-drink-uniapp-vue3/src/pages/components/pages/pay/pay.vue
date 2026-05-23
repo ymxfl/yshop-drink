@@ -1,6 +1,8 @@
 <template>
+	<view class="pay-page">
 	<uv-navbar
-	  :fixed="false"
+	  :fixed="true"
+	  :placeholder="true"
 	  :title="title"
 	  left-arrow
 	  @leftClick="$onClickLeft"
@@ -8,14 +10,14 @@
 	  :titleStyle="{ color: '#FFFFFF', fontWeight: 'bold' }"
 	  leftIconColor="#D4AF37"
 	/>
-	<view class="container position-relative">
-		<view style="margin-bottom: 130rpx;">
+	<scroll-view class="pay-scroll" scroll-y :show-scrollbar="false" :bounces="false">
+	<view class="container">
 			<view class="section-1">
 				<template v-if="store.distance > 0">
 					<list-cell class="location">
 						<view class="flex-fill d-flex justify-content-between align-items-center">
 							<view class="store-name flex-fill">{{ orderType == 'takeout' ? '外卖配送' : '点酒自取' }}</view>
-							<uv-switch activeColor="#09b4f1" v-model="active" @change="takout">
+							<uv-switch activeColor="#D4AF37" v-model="active" @change="takout">
 							</uv-switch>
 						</view>
 					</list-cell>
@@ -177,17 +179,17 @@
 			<!-- 支付方式 end -->
 			<!-- 备注 begin -->
 			<list-cell  last @click="goToRemark">
-				<view class="d-flex flex-fill align-items-center justify-content-between overflow-hidden" style="margin-bottom: 110rpx;">
+				<view class="d-flex flex-fill align-items-center justify-content-between overflow-hidden pay-remark-row">
 					<view class="flex-shrink-0 mr-20">备注</view>
 					<view class="text-color-primary flex-fill text-truncate text-right">{{ form.remark || '点击填写备注' }}
 					</view>
 				</view>
 			</list-cell>
 			<!-- 备注 end -->
-		</view>
+	</view>
+	</scroll-view>
 		<!-- 付款栏 begin -->
-		<view style="z-index: 1;"
-			class="w-100 pay-box position-fixed fixed-bottom d-flex align-items-center justify-content-between">
+		<view class="w-100 pay-box d-flex align-items-center justify-content-between">
 			<view class="pay-info">
 				<view class="pay-label">应付金额</view>
 				<view class="pay-amount">￥{{ amount }}</view>
@@ -716,26 +718,54 @@ const aliPay = async(order) => {
 </script>
 
 <style lang="scss">
-/* 覆盖list-cell默认白色背景 */
 page {
 	background-color: #121212 !important;
-}
-.list-cell,
-.uni-list-item,
-.uni-list-item__container,
-.uni-list-item__content {
-	background-color: #1E1E1E !important;
-	color: #FFFFFF !important;
-}
-.uni-list-item__extra {
-	color: #9E9E9E !important;
+	height: 100%;
 }
 </style>
 
 <style lang="scss" scoped>
-	.container {
-		padding: 20rpx 25rpx;
+	.pay-page {
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
 		background-color: #121212;
+	}
+
+	.pay-scroll {
+		flex: 1;
+		min-height: 0;
+		background-color: #121212;
+	}
+
+	.container {
+		padding: 20rpx 25rpx 30rpx;
+		background-color: #121212;
+	}
+
+	.pay-remark-row {
+		padding-bottom: 20rpx;
+	}
+
+	:deep(.tui-list-cell) {
+		background-color: #1E1E1E !important;
+		color: #FFFFFF !important;
+	}
+
+	:deep(.tui-list-cell::after) {
+		border-bottom-color: rgba(255, 255, 255, 0.06) !important;
+	}
+
+	:deep(.tui-cell-hover) {
+		background-color: #2A2A2A !important;
+	}
+
+	.section-1,
+	.section-2,
+	.payment,
+	.cart {
+		background-color: transparent;
 	}
 
 	.arrow {
@@ -799,11 +829,16 @@ page {
 	}
 
 	.pay-box {
+		flex-shrink: 0;
 		box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.4);
 		height: 110rpx;
 		background-color: #1E1E1E;
 		border-top: 1rpx solid rgba(212, 175, 55, 0.3);
 		padding: 0 30rpx;
+		/* #ifdef H5 */
+		padding-bottom: constant(safe-area-inset-bottom);
+		padding-bottom: env(safe-area-inset-bottom);
+		/* #endif */
 		
 		.pay-info {
 			display: flex;

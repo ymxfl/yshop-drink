@@ -5,6 +5,9 @@
 		  :title="title"
 		  left-arrow
 		  @leftClick="$onClickLeft"
+		  bg-color="#121212"
+		  :title-style="{ color: '#FFFFFF', fontWeight: 'bold' }"
+		  left-icon-color="#D4AF37"
 		/>
 		<view class="top">
 			<button type="primary" size="default" class="login-btn" @click="logout">
@@ -44,9 +47,16 @@ const logout = () => {
 	
 </script>
 
+<style lang="scss">
+page {
+	background-color: #121212 !important;
+}
+</style>
+
 <style lang="scss" scoped>
-	
 	.top {
+		background-color: #121212;
+		min-height: 100vh;
 		display: flex; 
 		height: 100%;
 	}

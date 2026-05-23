@@ -4,11 +4,14 @@
 	  :title="title"
 	  left-arrow
 	  @leftClick="$onClickLeft"
+	  bg-color="#121212"
+	  :title-style="{ color: '#FFFFFF', fontWeight: 'bold' }"
+	  left-icon-color="#D4AF37"
 	/>
 	<view class="container w-100 h-100 overflow-hidden">
 		<view class="textarea">
 			<textarea placeholder-class="text-color-assist font-size-base" v-model="remark"
-				class="bg-white w-100 border-box font-size-base remark"
+				class="remark w-100 border-box font-size-base"
 				:class="{'text-color-danger': remarkLength > 50, 'text-color-assist' : remarkLength <=50}"
 				placeholder="请填写备注信息" focus/>
 			<view class="tips" :class="{'text-color-danger': remarkLength > 50, 'text-color-assist' : remarkLength <=50}">
@@ -72,7 +75,18 @@ const submit = () => {
 
 </script>
 
+<style lang="scss">
+page {
+	background-color: #121212 !important;
+}
+</style>
+
 <style lang="scss" scoped>
+	.container {
+		background-color: #121212;
+		min-height: 100vh;
+		padding: 30rpx;
+	}
 	.container {
 		padding: 30rpx 40rpx;
 		
@@ -83,7 +97,9 @@ const submit = () => {
 				border-radius: 8rpx;
 				padding: 30rpx 40rpx;
 				height: 320rpx;
-				color: $font-size-base;
+				color: #CCCCCC;
+				background-color: #1E1E1E;
+				border: 1rpx solid rgba(212, 175, 55, 0.1);
 			}
 			
 			.tips {
@@ -97,9 +113,9 @@ const submit = () => {
 			padding-right: 20rpx;
 			
 			.quick-input {
-				background-color: #FFFFFF;
-				border: 2rpx solid $color-primary;
-				color: $color-primary;
+				background-color: #1E1E1E;
+				border: 2rpx solid #D4AF37;
+				color: #D4AF37;
 				font-size: $font-size-base;
 				padding: 16rpx 26rpx;
 				margin-right: 20rpx;

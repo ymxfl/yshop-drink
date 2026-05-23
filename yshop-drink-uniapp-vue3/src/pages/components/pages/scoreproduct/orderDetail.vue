@@ -1,15 +1,16 @@
 <template>
-	<!-- #ifdef MP-WEIXIN -->
 	<uv-navbar
 	  :fixed="false"
 	  :title="title"
 	  left-arrow
 	  @leftClick="$onClickLeft"
+	  bg-color="#121212"
+	  :title-style="{ color: '#FFFFFF', fontWeight: 'bold' }"
+	  left-icon-color="#D4AF37"
 	/>
-	<!-- #endif -->
 	<view class="container" style="padding:20rpx;">
 		<view style="padding-bottom: 100rpx;">
-			<view class="bg-white">
+			<view class="detail-card">
 				<view class="section">
 					
 					<list-cell :hover="false" padding="50rpx 30rpx">
@@ -95,7 +96,7 @@
 		</view>
 		<uv-toast ref="uToast" />
 	</view>
-	<view class="fixed-bottom flex justify-end bg-white p-2" v-if="order.havePaid > 0">
+	<view class="fixed-bottom flex justify-end detail-bottom p-2" v-if="order.havePaid > 0">
 		<view class="mr-1" v-if="order.haveDelivered ==0 && order.haveReceived == 0"><uv-button type="success"  :plain="true" size="small" text="确认收货" @click="receive(order)"></uv-button></view>
 		<view class="mr-1"><uv-button type="error" :plain="true" size="small" text="查看物流" @click="getExpresssn()"></uv-button></view>
 	</view>
@@ -249,7 +250,7 @@ const  receive = async(order) => {
 }
 
 .btn-box {
-	background-color: #ffffff;
+	background-color: #1E1E1E;
 	position: fixed;
 	bottom: 0;
 	left: 0;
@@ -283,5 +284,25 @@ const  receive = async(order) => {
 .product-image {
 	width: 140rpx;
 	height: 140rpx;
+}
+</style>
+
+<style lang="scss">
+page {
+	background-color: #121212 !important;
+}
+</style>
+
+<style lang="scss" scoped>
+.container {
+	background-color: #121212;
+	min-height: 100vh;
+}
+.detail-card {
+	background-color: #1E1E1E;
+	border-radius: 16rpx;
+}
+.detail-bottom {
+	background-color: #1E1E1E;
 }
 </style>

@@ -1,15 +1,13 @@
 <template>
-	<!-- #ifdef MP-WEIXIN -->
 	<uv-navbar
 	  :fixed="false"
 	  :title="title"
 	  left-arrow
 	  @leftClick="$onClickLeft"
-	  :bg-color="navBgColor"
-	  :title-style="navTitleStyle"
-	  :left-icon-color="navIconColor"
+	  bg-color="#121212"
+	  :title-style="{ color: '#FFFFFF', fontWeight: 'bold' }"
+	  left-icon-color="#D4AF37"
 	/>
-	<!-- #endif -->
 	<view class="page-wrap">
 		<!-- 商品轮播图 -->
 		<view class="carousel">
@@ -67,9 +65,6 @@ import cookie from '@/utils/cookie'
 const { proxy } = getCurrentInstance();
 
 const title = ref('商品详情')
-const navBgColor = '#1a1a1a'
-const navTitleStyle = 'color: #F5D061; font-weight: bold;'
-const navIconColor = '#D4AF37'
 
 const product = ref({})
 const id = ref(false)

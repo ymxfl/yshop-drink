@@ -158,5 +158,9 @@ export function parseQuery() {
   
     return res
   }
-  
+
+/** 子页面自定义导航栏统一样式 */
+export const NAV_BAR_BG = '#121212'
+export const NAV_BAR_TITLE_STYLE = { color: '#FFFFFF', fontWeight: 'bold' }
+export const NAV_BAR_ICON_COLOR = '#D4AF37'
 

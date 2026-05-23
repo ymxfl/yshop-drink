@@ -1,22 +1,25 @@
 <template>
-	<!-- #ifdef MP-WEIXIN -->
-	<uv-navbar
-	  :fixed="false"
-	  :title="title"
-	  left-arrow
-	  @leftClick="$onClickLeft"
-	  bg-color="#1a1a1a"
-	  title-style="color: #F5D061; font-weight: bold;"
-	  left-icon-color="#D4AF37"
-	/>
-	<!-- #endif -->
-	<view class="page-wrap">
-		<view v-if="content" class="content-card">
-			<rich-text :nodes="content"></rich-text>
-		</view>
-		<view v-else class="loading-wrap">
-			<uv-loading-icon mode="circle" color="#D4AF37"></uv-loading-icon>
-		</view>
+	<view class="content-page">
+		<uv-navbar
+		  :fixed="true"
+		  :placeholder="true"
+		  :title="title"
+		  left-arrow
+		  @leftClick="$onClickLeft"
+		  bg-color="#121212"
+		  :title-style="{ color: '#FFFFFF', fontWeight: 'bold' }"
+		  left-icon-color="#D4AF37"
+		/>
+		<scroll-view class="content-scroll" scroll-y :show-scrollbar="false" :bounces="false">
+			<view class="page-wrap">
+				<view v-if="content" class="content-card">
+					<rich-text :nodes="content"></rich-text>
+				</view>
+				<view v-else class="loading-wrap">
+					<uv-loading-icon mode="circle" color="#D4AF37"></uv-loading-icon>
+				</view>
+			</view>
+		</scroll-view>
 	</view>
 </template>
 
@@ -48,14 +51,28 @@ const getContent = async (id) => {
 <style lang="scss">
 page {
 	background-color: #121212 !important;
+	height: 100%;
 }
 </style>
 
 <style lang="scss" scoped>
-.page-wrap {
+.content-page {
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
 	background-color: #121212;
-	min-height: 100vh;
+}
+
+.content-scroll {
+	flex: 1;
+	min-height: 0;
+	background-color: #121212;
+}
+
+.page-wrap {
 	padding: 24rpx;
+	padding-bottom: 40rpx;
 }
 
 .content-card {

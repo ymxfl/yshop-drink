@@ -1,14 +1,15 @@
 <template>
-	<!-- #ifdef MP-WEIXIN -->
 	<uv-navbar
 	  :fixed="false"
 	  :title="title"
 	  left-arrow
 	  @leftClick="$onClickLeft"
+	  bg-color="#121212"
+	  :title-style="{ color: '#FFFFFF', fontWeight: 'bold' }"
+	  left-icon-color="#D4AF37"
 	/>
-	<!-- #endif -->
 	<view class="container">
-		<view class="bg-white">
+		<view class="tabs-wrap">
 			<uv-tabs :list="tabList" :current="current" @change="change" keyName="name" :scrollable="false"></uv-tabs>
 		</view>
 		<view class="orders-list d-flex flex-column w-100" style="padding: 20rpx; padding-bottom: 0;">
@@ -163,7 +164,20 @@ const  receive = async(order) => {
 
 </script>
 
+<style lang="scss">
+page {
+	background-color: #121212 !important;
+}
+</style>
+
 <style lang="scss" scoped>
+	.container {
+		background-color: #121212;
+		min-height: 100vh;
+	}
+	.tabs-wrap {
+		background-color: #1E1E1E;
+	}
 	.left-margin {
 		margin-left: 10rpx;
 	}

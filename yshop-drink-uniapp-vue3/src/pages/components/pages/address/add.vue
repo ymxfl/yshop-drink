@@ -4,9 +4,9 @@
 	  :title="title"
 	  left-arrow
 	  @leftClick="$onClickLeft"
-	  :bg-color="navBgColor"
-	  :title-style="navTitleStyle"
-	  :left-icon-color="navIconColor"
+	  bg-color="#121212"
+	  :title-style="{ color: '#FFFFFF', fontWeight: 'bold' }"
+	  left-icon-color="#D4AF37"
 	/>
 	<view class="page-wrap">
 		<view class="form-card">
@@ -64,9 +64,6 @@ const main = useMainStore()
 const { isLogin, addresses } = storeToRefs(main)
 
 const title = ref('编辑地址')
-const navBgColor = '#1a1a1a'
-const navTitleStyle = 'color: #F5D061; font-weight: bold;'
-const navIconColor = '#D4AF37'
 
 const form = ref({
 	realName: '',

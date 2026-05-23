@@ -1,9 +1,13 @@
 <template>
 	<uv-navbar
-	  :fixed="false"
+	  :fixed="true"
+	  :placeholder="true"
 	  :title="title"
 	  left-arrow
 	  @leftClick="$onClickLeft"
+	  bg-color="#121212"
+	  :title-style="{ color: '#FFFFFF', fontWeight: 'bold' }"
+	  left-icon-color="#D4AF37"
 	/>
 	<view class="container">
 		<view class="main">
@@ -22,7 +26,7 @@
 									{{ address.realName }} {{ address.isDefault ? '默认' : '' }} {{ address.phone }}
 								</view>
 							</view>
-							<image src="/static/images/edit.png" class="edit-icon" @tap.stop="edit(address.id)"></image>
+							<uv-icon name="edit-pen-fill" color="#D4AF37" size="44rpx" class="edit-icon" @tap.stop="edit(address.id)"></uv-icon>
 						</view>
 					</uv-swipe-action-item>
 				</uv-swipe-action>
@@ -165,10 +169,17 @@ const chooseAddress = async(address) => {
 
 </script>
 
+<style lang="scss">
+page {
+	background-color: #121212 !important;
+}
+</style>
+
 <style lang="scss" scoped>
 	.container {
 		width: 100%;
-		height: 100%;
+		min-height: 100vh;
+		background-color: #121212;
 	}
 
 	.main {
@@ -182,13 +193,23 @@ const chooseAddress = async(address) => {
 			margin-bottom: 30rpx;
 		}
 
+		:deep(.uv-swipe-action-item__content) {
+			background-color: #121212;
+		}
+
 		.address {
 			width: 100%;
 			padding: 40rpx 30rpx;
-			background-color: #FFFFFF;
+			background-color: #1E1E1E;
+			border-radius: 16rpx;
+			border: 1rpx solid rgba(212, 175, 55, 0.1);
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
+
+			.font-size-lg {
+				color: #FFFFFF;
+			}
 
 			.right {
 				flex: 1;
@@ -207,8 +228,8 @@ const chooseAddress = async(address) => {
 
 	.btn-box {
 		height: 100rpx;
-		background-color: #FFFFFF;
-		box-shadow: 0 0 20rpx rgba($color: $text-color-assist, $alpha: 0.1);
+		background-color: #1E1E1E;
+		box-shadow: 0 0 20rpx rgba(0, 0, 0, 0.3);
 		position: fixed;
 		bottom: 0;
 		left: 0;
@@ -225,6 +246,21 @@ const chooseAddress = async(address) => {
 			display: flex;
 			align-items: center;
 			justify-content: center;
+			background: linear-gradient(135deg, #E6C655, #D4AF37) !important;
+			color: #121212 !important;
+			border: none !important;
 		}
+
+		button::after {
+			border: none !important;
+		}
+	}
+
+	.address-wrapper::after {
+		border: none !important;
+	}
+
+	.edit-icon {
+		flex-shrink: 0;
 	}
 </style>

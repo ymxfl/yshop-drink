@@ -50,7 +50,7 @@ const props = defineProps ({
 	 },
 	 bgcolor: {
 	 	type: String,
-	 	default: "#fff" //背景颜色
+	 	default: "transparent" //背景颜色
 	 },
 	 size: {
 	 	type: Number,
@@ -89,13 +89,13 @@ const handleClick = () => {
 }
 
 .tui-cell-hover {
-	background: #f7f7f9 !important;
+	background: rgba(255,255,255,0.06) !important;
 }
 
 .tui-list-cell::after {
 	content: '';
 	position: absolute;
-	border-bottom: 2rpx solid #eee;
+	border-bottom: 2rpx solid rgba(255,255,255,0.08);
 	-webkit-transform: scaleY(0.8);
 	transform: scaleY(0.8);
 	bottom: 0;
